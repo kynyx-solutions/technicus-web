@@ -16,7 +16,7 @@ type Field = {
   half?: boolean;
 };
 
-type FormType = "consultation" | "brief" | "nda" | "career" | "local";
+type FormType = "consultation" | "brief" | "nda" | "local";
 
 const budgets = ["Not sure yet", "Under $10k", "$10k to $50k", "$50k to $150k", "Over $150k"];
 const timelines = ["As soon as possible", "Within 3 months", "3 to 6 months", "Not decided"];
@@ -57,17 +57,6 @@ const forms: Record<FormType, { fields: Field[]; submit: string }> = {
   nda: {
     submit: "Request an NDA",
     fields: [name, email, company, { name: "message", label: "Anything to add", kind: "textarea" }],
-  },
-  career: {
-    submit: "Send application",
-    fields: [
-      name,
-      { ...email, label: "Email" },
-      { name: "phone", label: "Phone", kind: "tel", autoComplete: "tel", half: true },
-      { name: "role", label: "Role you are interested in", half: true },
-      { name: "link", label: "Link to your CV, LinkedIn or portfolio", kind: "url", required: true, placeholder: "https://" },
-      { name: "message", label: "A few lines about you", kind: "textarea" },
-    ],
   },
   local: {
     submit: "Send enquiry",

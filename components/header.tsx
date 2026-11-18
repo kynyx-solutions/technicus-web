@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
-import { contact } from "@/content/company";
 import { pillars } from "@/content/services";
 import { aboutPages, industries, site } from "@/content/site";
 
@@ -22,7 +21,7 @@ function Chevron({ open }: { open: boolean }) {
   );
 }
 
-export function Header() {
+export function Header({ contact }: { contact: { email: string; phone: string; phoneHref: string } }) {
   const pathname = usePathname();
   const header = useRef<HTMLElement>(null);
   const [menu, setMenu] = useState<Menu>(null);

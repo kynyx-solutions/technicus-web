@@ -11,7 +11,7 @@ export function LegalPage({ slug }: { slug: string }) {
   return (
     <>
       <Hero crumbs={[{ href: `/${doc.slug}`, name: doc.title }]} title={doc.title} lead={`Last updated ${formatDate(doc.updated)}`} />
-      <div data-tone="light" className="panel bg-fog pt-16 pb-28 md:pt-24 md:pb-40">
+      <div data-tone="light" className="panel bg-fog pt-12 pb-20 md:pt-20 md:pb-28">
         <div className="inner grid gap-12 md:grid-cols-12">
           <nav aria-label="On this page" className="md:col-span-3">
             <ul className="space-y-2.5 text-[0.95rem] md:sticky md:top-28">

@@ -1,9 +1,9 @@
 import "server-only";
-import { appendFile, mkdir } from "node:fs/promises";
-import path from "node:path";
 import { z } from "zod";
+import { db, reference } from "@/lib/db";
+import type { ApplicationRow, LeadRow } from "@/lib/db/types";
 
-export const leadTypes = ["consultation", "brief", "nda", "career", "local"] as const;
+export const leadTypes = ["consultation", "brief", "nda", "local"] as const;
 export type LeadType = (typeof leadTypes)[number];
 
 const text = (max: number) => z.string().trim().max(max);
@@ -49,15 +49,6 @@ export const schemas = {
     message: optional(2000),
     consent,
   }),
-  career: z.object({
-    ...base,
-    email,
-    phone: optional(40),
-    role: optional(),
-    link: required("A link to your CV or profile", 500).url("Enter a full link, starting with https://"),
-    message: optional(4000),
-    consent,
-  }),
   local: z.object({
     ...base,
     phone: required("Phone", 40),
@@ -66,44 +57,135 @@ export const schemas = {
   }),
 } satisfies Record<LeadType, z.ZodType>;
 
-export type Lead = {
-  id: string;
-  type: LeadType;
-  createdAt: string;
-  fields: Record<string, string>;
-};
+/** Job applications. The CV file is checked separately. */
+export const applicationSchema = z.object({
+  name: required("Name"),
+  email,
+  phone: optional(40),
+  city: optional(100),
+  role: optional(200),
+  link: z.union([z.literal(""), text(500).url("Enter a full link, starting with https://")]).optional().default(""),
+  message: optional(4000),
+  consent,
+});
 
-/**
- * Where leads are kept. This version appends one JSON object per line to a file
- * in .data/ (not committed). It works on any Node server. On Cloudflare Workers
- * there is no file system: replace this function with an insert into D1 when
- * the site is deployed there. Nothing else in the forms needs to change.
- */
-export async function saveLead(lead: Lead) {
-  const dir = path.join(process.cwd(), ".data");
-  await mkdir(dir, { recursive: true });
-  await appendFile(path.join(dir, "leads.jsonl"), JSON.stringify(lead) + "\n", "utf8");
+export const CV_TYPES: Record<string, string> = {
+  "application/pdf": "pdf",
+  "application/msword": "doc",
+  "application/vnd.openxmlformats-officedocument.wordprocessingml.document": "docx",
+};
+export const CV_MAX_BYTES = 4 * 1024 * 1024;
+
+/** True if the file's first bytes match a PDF or Word document, whatever its name says. */
+export function looksLikeCv(bytes: Buffer) {
+  const head = bytes.subarray(0, 8);
+  const pdf = head.subarray(0, 4).toString() === "%PDF";
+  const docx = head[0] === 0x50 && head[1] === 0x4b; // a zip file, which .docx is
+  const doc = head.equals(Buffer.from([0xd0, 0xcf, 0x11, 0xe0, 0xa1, 0xb1, 0x1a, 0xe1]));
+  return pdf || docx || doc;
+}
+
+const split = (v?: string) => (v ? v.split(", ").map((s) => s.trim()).filter(Boolean) : []);
+
+/** Stores a form submission as a lead in the admin's inbox. */
+export async function saveLead(type: LeadType, fields: Record<string, string>, ip: string): Promise<LeadRow> {
+  return db().insert("leads", {
+    ref: reference("TQ"),
+    type,
+    name: fields.name ?? "",
+    email: fields.email ?? "",
+    phone: fields.phone ?? "",
+    company: fields.company ?? "",
+    country: fields.country ?? "",
+    services: split(fields.service || fields.topic),
+    budget: fields.budget ?? "",
+    timeline: fields.timeline ?? "",
+    message: fields.message ?? "",
+    source: fields.source ?? "",
+    fields,
+    status: "new",
+    priority: "medium",
+    notes: [],
+    ip,
+  });
+}
+
+export async function saveApplication(
+  fields: z.infer<typeof applicationSchema>,
+  cv: { bytes: Buffer; name: string; type: string },
+  ip: string,
+): Promise<ApplicationRow> {
+  const ref = reference("TJ");
+  const cvPath = `cv/${new Date().toISOString().slice(0, 7)}/${ref}.${CV_TYPES[cv.type]}`;
+  await db().putFile(cvPath, cv.bytes, cv.type);
+  try {
+    return await db().insert("applications", {
+      ref,
+      role: fields.role || "Open application",
+      name: fields.name,
+      email: fields.email,
+      phone: fields.phone,
+      city: fields.city,
+      link: fields.link,
+      message: fields.message,
+      cv_path: cvPath,
+      cv_name: cv.name.slice(0, 200),
+      status: "new",
+      notes: "",
+      ip,
+    });
+  } catch (error) {
+    await db().removeFiles([cvPath]);
+    throw error;
+  }
 }
 
 /**
- * Tells the team about a new lead. If LEAD_WEBHOOK_URL is set, the lead is
- * posted there as JSON (an email service, a chat channel or a CRM can receive
- * it). Without it, the lead is only stored. A failure here never loses the
- * lead, because it has already been saved.
+ * Tells the team about a new lead or application. Either or both:
+ * - RESEND_API_KEY, NOTIFY_EMAIL and MAIL_FROM: an email through Resend.
+ * - LEAD_WEBHOOK_URL: the record posted as JSON (a chat channel or a CRM).
+ * A failure here never loses the submission, which is already stored.
  */
-export async function notifyTeam(lead: Lead) {
-  const url = process.env.LEAD_WEBHOOK_URL;
-  if (!url) return;
-  try {
-    await fetch(url, {
-      method: "POST",
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify(lead),
-      signal: AbortSignal.timeout(5000),
-    });
-  } catch (error) {
-    console.error("Lead notification failed", lead.id, error);
+export async function notifyTeam(kind: "lead" | "application", record: { ref: string; name: string; email: string; [k: string]: unknown }) {
+  const site = process.env.SITE_URL ?? "";
+  const tasks: Promise<unknown>[] = [];
+  if (process.env.RESEND_API_KEY && process.env.NOTIFY_EMAIL && process.env.MAIL_FROM) {
+    const link = `${site}/admin/${kind === "lead" ? "leads" : "applications"}`;
+    const subject = kind === "lead" ? `New enquiry from ${record.name} (${record.ref})` : `New application from ${record.name} (${record.ref})`;
+    const text = [
+      subject,
+      "",
+      `Name: ${record.name}`,
+      `Email: ${record.email}`,
+      record.company ? `Company: ${record.company}` : "",
+      record.role ? `Role: ${record.role}` : "",
+      record.message ? `\n${record.message}` : "",
+      "",
+      `Open in the admin: ${link}`,
+    ]
+      .filter((l) => l !== "")
+      .join("\n");
+    tasks.push(
+      fetch("https://api.resend.com/emails", {
+        method: "POST",
+        headers: { authorization: `Bearer ${process.env.RESEND_API_KEY}`, "content-type": "application/json" },
+        body: JSON.stringify({ from: process.env.MAIL_FROM, to: process.env.NOTIFY_EMAIL.split(","), reply_to: record.email, subject, text }),
+        signal: AbortSignal.timeout(8000),
+      }),
+    );
   }
+  if (process.env.LEAD_WEBHOOK_URL) {
+    tasks.push(
+      fetch(process.env.LEAD_WEBHOOK_URL, {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ kind, ...record, ip: undefined }),
+        signal: AbortSignal.timeout(5000),
+      }),
+    );
+  }
+  const results = await Promise.allSettled(tasks);
+  for (const r of results) if (r.status === "rejected") console.error("Notification failed", record.ref, r.reason);
 }
 
 // A simple limit per visitor address, held in memory. It resets when the server

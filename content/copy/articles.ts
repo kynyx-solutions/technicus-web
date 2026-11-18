@@ -79,7 +79,7 @@ export const articleCopy: Article[] = [
         type: "p",
         text: "Release in stages. Start in shadow mode, where the agent drafts and staff send. Move to a small share of real traffic once drafts are being accepted with few edits. Review a sample of conversations every week and add each failure to the evaluation set. Rerun the set before any change to the prompt, the model or the tools. Behaviour can shift when any of these change, and the evaluation set is how you notice.",
       },
-      { type: "h2", text: "A scoping checklist" },
+      { type: "h2", text: "A scoping checklist for an AI agent project" },
       {
         type: "ul",
         items: [
@@ -181,7 +181,7 @@ export const articleCopy: Article[] = [
           "Whether rules on where data is stored or how it is audited rule out any of the products.",
         ],
       },
-      { type: "h2", text: "How to run the decision" },
+      { type: "h2", text: "How to run the build or buy decision" },
       {
         type: "p",
         text: "Give the decision a fixed, short period. Shortlist two or three products and run your real scenarios through each. In parallel, get an outline estimate for building the same scope, including the first three years of running it. Compare the options on total cost over that period, time to first use, fit to the distinctive steps and the cost of leaving. Write down the assumptions. The decision will be questioned later, and the reasoning should outlast the people who made it.",
@@ -281,7 +281,7 @@ export const articleCopy: Article[] = [
           "Restore from a backup in the new environment before you depend on it.",
         ],
       },
-      { type: "h2", text: "After the move" },
+      { type: "h2", text: "After you migrate to the cloud" },
       {
         type: "p",
         text: "Keep the old environment for the agreed period, then shut it down, or you will pay twice. Review the bill after the first full month and compare it with the estimate. Update the runbooks, monitoring and on-call arrangements, because the failure modes are different now. A migration is complete when the team can operate the new environment with confidence, not when the last server is switched off.",
@@ -368,7 +368,7 @@ export const articleCopy: Article[] = [
         type: "p",
         text: "Ask for a clickable prototype of the top tasks and put it in front of a handful of people from the real user group. Watch them attempt each task without help. This takes days, costs little next to development, and settles disagreements that opinion cannot. Allow time for one round of changes afterwards.",
       },
-      { type: "h2", text: "A one-page brief" },
+      { type: "h2", text: "How to brief a design team on one page" },
       {
         type: "ul",
         items: [
@@ -485,7 +485,7 @@ export const articleCopy: Article[] = [
         type: "p",
         text: "Collect only the personal data you need. Know where it is stored, how long you keep it and how you would delete it on request. Make sure the privacy notice matches what the application does, including the third-party scripts on each page. Analytics and advertising tags can pass on more than you intend.",
       },
-      { type: "h2", text: "What a checklist cannot do" },
+      { type: "h2", text: "What a security review checklist cannot do" },
       {
         type: "p",
         text: "A checklist catches known classes of weakness. It does not find flaws in the logic of your own application, such as a discount that can be applied twice or an approval step that can be skipped. For applications that handle money or sensitive data, commission a penetration test from people who did not build the system, and leave time before launch to fix what they find. Repeat the review after major changes. Security is a condition you maintain, not a gate you pass once.",

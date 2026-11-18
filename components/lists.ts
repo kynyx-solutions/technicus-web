@@ -1,8 +1,9 @@
 import type { CardItem, StackItem, WorkItem } from "@/components/ui";
-import { articles, getPillarCopy } from "@/content/copy";
+import { getPillarCopy } from "@/content/copy";
 import { pillars, type Pillar } from "@/content/services";
 import { industries } from "@/content/site";
-import { projects, type Project } from "@/content/work";
+import type { Project } from "@/content/work";
+import type { ArticleItem } from "@/lib/cms";
 
 /** The seven pillars as stacked service cards. */
 export const pillarStack = (): StackItem[] =>
@@ -35,7 +36,7 @@ const workItem = (p: Project): WorkItem => ({
 });
 
 /** Case studies, optionally only those for one pillar or industry. Falls back to all. */
-export function workItems(filter?: { pillar?: string; industry?: string }, count = 3): WorkItem[] {
+export function workItems(projects: Project[], filter?: { pillar?: string; industry?: string }, count = 3): WorkItem[] {
   let list = projects;
   if (filter?.pillar) list = projects.filter((p) => p.pillars.includes(filter.pillar!));
   if (filter?.industry) list = projects.filter((p) => p.industrySlug === filter.industry);
@@ -49,7 +50,7 @@ export const formatDate = (iso: string) =>
   );
 
 /** Articles, optionally only those related to one pillar. Falls back to the latest. */
-export function insightCards(pillar?: string, count = 3, except?: string): CardItem[] {
+export function insightCards(articles: ArticleItem[], pillar?: string, count = 3, except?: string): CardItem[] {
   const pool = articles.filter((a) => a.slug !== except);
   const related = pillar ? pool.filter((a) => a.related.includes(pillar)) : [];
   const list = related.length > 0 ? related : pool;
@@ -58,5 +59,6 @@ export function insightCards(pillar?: string, count = 3, except?: string): CardI
     title: a.title,
     text: a.summary,
     meta: `${a.kind} · ${a.readingMinutes} min`,
+    image: a.coverImage,
   }));
 }

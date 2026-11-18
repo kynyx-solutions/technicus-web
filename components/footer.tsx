@@ -1,6 +1,5 @@
 import Link from "next/link";
-import { articles } from "@/content/copy";
-import { contact, offices } from "@/content/company";
+import { getArticles, getContactInfo } from "@/lib/cms";
 import { pillars } from "@/content/services";
 import { industries, legalPages, site } from "@/content/site";
 
@@ -15,10 +14,12 @@ const mainLinks = [
   { href: "/contact", name: "Contact" },
 ];
 
-function Icon({ name }: { name: "linkedin" | "x" | "facebook" | "whatsapp" }) {
+function Icon({ name }: { name: "linkedin" | "x" | "facebook" | "whatsapp" | "instagram" }) {
   const paths = {
     linkedin:
       "M6.94 8.5H3.56V20h3.38V8.5ZM5.25 3a1.96 1.96 0 1 0 0 3.92 1.96 1.96 0 0 0 0-3.92ZM20.44 13.4c0-3.1-1.66-5.15-4.42-5.15-1.6 0-2.62.86-3.06 1.66V8.5H9.7V20h3.37v-6.06c0-1.6.6-2.73 2.03-2.73 1.38 0 1.96 1.1 1.96 2.73V20h3.38v-6.6Z",
+    instagram:
+      "M12 3.2c2.87 0 3.2.01 4.34.06 1.05.05 1.62.22 2 .37.5.2.86.43 1.24.8.37.38.6.74.8 1.24.15.38.32.95.37 2 .05 1.13.06 1.47.06 4.33s-.01 3.2-.06 4.34c-.05 1.05-.22 1.62-.37 2-.2.5-.43.86-.8 1.24-.38.37-.74.6-1.24.8-.38.15-.95.32-2 .37-1.13.05-1.47.06-4.34.06s-3.2-.01-4.33-.06c-1.05-.05-1.62-.22-2-.37-.5-.2-.86-.43-1.24-.8a3.33 3.33 0 0 1-.8-1.24c-.15-.38-.32-.95-.37-2C3.21 15.2 3.2 14.87 3.2 12s.01-3.2.06-4.33c.05-1.05.22-1.62.37-2 .2-.5.43-.86.8-1.24.38-.37.74-.6 1.24-.8.38-.15.95-.32 2-.37C8.8 3.21 9.13 3.2 12 3.2Zm0 4.38a4.42 4.42 0 1 0 0 8.84 4.42 4.42 0 0 0 0-8.84Zm0 7.29a2.87 2.87 0 1 1 0-5.74 2.87 2.87 0 0 1 0 5.74Zm4.6-8.5a1.03 1.03 0 1 0 0 2.07 1.03 1.03 0 0 0 0-2.07Z",
     x: "M17.53 3H20.5l-6.5 7.43L21.65 21h-5.98l-4.69-6.13L5.62 21H2.64l6.96-7.95L2.25 3h6.13l4.24 5.6L17.53 3Zm-1.04 16.2h1.65L7.58 4.7H5.81l10.68 14.5Z",
     facebook: "M13.5 21v-8h2.7l.4-3.13h-3.1V7.88c0-.9.25-1.52 1.55-1.52h1.65V3.57A22 22 0 0 0 14.3 3.4c-2.4 0-4.05 1.47-4.05 4.16v2.31H7.5V13h2.75v8h3.25Z",
     whatsapp:
@@ -48,11 +49,14 @@ function Column({ title, links }: { title: string; links: { href: string; name: 
   );
 }
 
-export function Footer() {
+export async function Footer() {
+  const [contact, articles] = await Promise.all([getContactInfo(), getArticles()]);
+  const offices = contact.offices;
   const social = [
     { href: contact.linkedin, name: "LinkedIn", icon: "linkedin" as const },
     { href: contact.x, name: "X", icon: "x" as const },
     { href: contact.facebook, name: "Facebook", icon: "facebook" as const },
+    { href: contact.instagram, name: "Instagram", icon: "instagram" as const },
     { href: contact.whatsappHref, name: "WhatsApp", icon: "whatsapp" as const },
   ].filter((s) => s.href);
 

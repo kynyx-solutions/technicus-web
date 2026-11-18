@@ -112,7 +112,7 @@ export function Hero({
   const center = align === "center";
   const dark = tone === "dark";
   return (
-    <section data-tone={tone} className={`relative overflow-hidden ${toneClass[tone]} pt-36 md:pt-44 ${media ? "pb-28 md:pb-36" : "pb-32 md:pb-44"}`}>
+    <section data-tone={tone} className={`relative overflow-hidden ${toneClass[tone]} pt-36 md:pt-44 ${media ? "pb-20 md:pb-28" : "pb-24 md:pb-32"}`}>
       {art && (
         <>
           <Art kind={art} className="pointer-events-none absolute -bottom-2 -left-24 h-48 w-auto opacity-90 md:h-72" />
@@ -174,11 +174,11 @@ export function Section({
   center?: boolean;
 }) {
   return (
-    <section id={id} data-tone={tone === "dark" ? "dark" : "light"} className={`panel ${toneClass[tone]} pt-20 pb-28 md:pt-28 md:pb-36 lg:pt-36 lg:pb-48`}>
+    <section id={id} data-tone={tone === "dark" ? "dark" : "light"} className={`panel ${toneClass[tone]} pt-14 pb-20 md:pt-20 md:pb-24 lg:pt-28 lg:pb-32`}>
       <div className={wide ? "shell" : "inner"}>
         {(title || lead) && (
           <header
-            className={`mb-12 md:mb-16 ${center ? "mx-auto max-w-3xl text-center" : "flex flex-wrap items-end justify-between gap-x-10 gap-y-6"}`}
+            className={`mb-10 md:mb-12 ${center ? "mx-auto max-w-3xl text-center" : "flex flex-wrap items-end justify-between gap-x-10 gap-y-6"}`}
           >
             <div className={center ? "" : "max-w-3xl"}>
               {title && (
@@ -309,7 +309,7 @@ export function Rows({ items }: { items: RowItem[] }) {
   );
 }
 
-export type CardItem = { href: string; title: string; text?: string; meta?: string };
+export type CardItem = { href: string; title: string; text?: string; meta?: string; image?: string };
 
 const PASTELS = ["bg-mint", "bg-lavender"];
 
@@ -345,11 +345,16 @@ export function PostCards({ items }: { items: CardItem[] }) {
         <li key={item.href} data-reveal>
           <Link href={item.href} className="group block">
             <span className={`relative block aspect-[4/3] overflow-hidden rounded-[20px] ${backgrounds[i % backgrounds.length]}`}>
-              <Art
-                kind={kinds[i % kinds.length]}
-                tone="light"
-                className="absolute inset-x-0 bottom-0 mx-auto h-[78%] w-auto transition-transform duration-700 ease-out group-hover:scale-105"
-              />
+              {item.image ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img src={item.image} alt="" loading="lazy" className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105" />
+              ) : (
+                <Art
+                  kind={kinds[i % kinds.length]}
+                  tone="light"
+                  className="absolute inset-x-0 bottom-0 mx-auto h-[78%] w-auto transition-transform duration-700 ease-out group-hover:scale-105"
+                />
+              )}
             </span>
             {item.meta && <span className="label mt-5 block opacity-55">{item.meta}</span>}
             <span className="mt-2 block text-[1.3rem] leading-snug font-medium tracking-[-0.01em] transition-opacity group-hover:opacity-70">
@@ -488,7 +493,7 @@ export function ClosingCall({
   lead?: string;
 }) {
   return (
-    <section data-tone="dark" className="panel overflow-hidden bg-black pt-28 pb-40 text-white md:pt-40 md:pb-56">
+    <section data-tone="dark" className="panel overflow-hidden bg-black pt-20 pb-28 text-white md:pt-28 md:pb-40">
       <Art kind="triangle" className="pointer-events-none absolute inset-x-0 bottom-0 mx-auto h-[85%] w-auto max-w-none opacity-80" />
       <div className="inner relative text-center">
         <h2 className="display mx-auto max-w-[16ch]" data-split>

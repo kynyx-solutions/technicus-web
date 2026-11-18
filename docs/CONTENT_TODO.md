@@ -2,7 +2,7 @@
 
 Date: 18 November 2026
 
-The site is built with real copy, but nothing about Technicus was invented. Where a fact was not known, the page either hides that part or uses text taken from the 2016 site. This list is everything the owners must confirm, correct or supply. While developing (`npm run dev`), each gap is also marked on the page itself with an orange "Needs content" note. Those notes never appear in a production build.
+The site is built with real copy, but nothing about Technicus was invented. Where a fact was not known, the page either hides that part or uses text taken from the 2016 site. This list is everything the owners must confirm, correct or supply. Most of it can now be entered in the admin at `/admin` (home page, articles, case studies, job openings, testimonials, contact details, offices, SEO); services, industries and legal texts are still edited in code. While developing (`npm run dev`), each gap is also marked on the page itself with an orange "Needs content" note. Those notes never appear in a production build.
 
 ## 1. Facts copied from the old site: confirm each one
 

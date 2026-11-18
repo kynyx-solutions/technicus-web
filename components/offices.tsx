@@ -1,7 +1,9 @@
 import { LocalTime } from "@/components/local-time";
-import { contact, offices } from "@/content/company";
+import { getContactInfo } from "@/lib/cms";
 
-export function OfficeCards() {
+export async function OfficeCards() {
+  const contact = await getContactInfo();
+  const offices = contact.offices;
   return (
     <ul className="grid gap-4 md:grid-cols-2">
       {offices.map((o, i) => (

@@ -1,9 +1,10 @@
+import { SiteChrome } from "@/components/site/chrome";
 import { SceneBox } from "@/components/three/scene-box";
 import { Cards, Hero, Section } from "@/components/ui";
 
 export default function NotFound() {
   return (
-    <>
+    <SiteChrome>
       <Hero
         title="This page does not exist"
         lead="The address may be old or mistyped. These will get you back."
@@ -20,6 +21,6 @@ export default function NotFound() {
           ]}
         />
       </Section>
-    </>
+    </SiteChrome>
   );
 }

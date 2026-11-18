@@ -150,3 +150,75 @@ html.js-motion [data-split] {
     scroll-behavior: auto !important;
   }
 }
+
+/* Article text written in the admin's editor. */
+.article-body > * + * {
+  margin-top: 1.5rem;
+}
+.article-body h2 {
+  padding-top: 2rem;
+  font-size: 1.75rem;
+  line-height: 1.15;
+  font-weight: 500;
+  letter-spacing: -0.015em;
+}
+.article-body h3,
+.article-body h4 {
+  padding-top: 1rem;
+  font-size: 1.35rem;
+  line-height: 1.25;
+  font-weight: 500;
+}
+@media (min-width: 768px) {
+  .article-body h2 {
+    font-size: 2rem;
+  }
+}
+.article-body ul,
+.article-body ol {
+  padding-left: 1.4rem;
+}
+/* No numbering anywhere on the site, so numbered lists show bullets too. */
+.article-body ul,
+.article-body ol {
+  list-style: disc;
+}
+.article-body li + li {
+  margin-top: 0.75rem;
+}
+.article-body li::marker {
+  color: var(--color-black);
+}
+.article-body a {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.article-body blockquote {
+  border-left: 2px solid var(--color-black);
+  padding-left: 1.25rem;
+  font-size: 1.3em;
+  line-height: 1.4;
+}
+.article-body img {
+  border-radius: 18px;
+}
+.article-body code {
+  border-radius: 6px;
+  background: var(--color-smoke);
+  padding: 0.1em 0.35em;
+  font-size: 0.9em;
+}
+.article-body pre {
+  overflow-x: auto;
+  border-radius: 14px;
+  background: var(--color-coal);
+  padding: 1.25rem;
+  color: var(--color-white);
+}
+.article-body pre code {
+  background: none;
+  padding: 0;
+}
+.article-body hr {
+  border-color: var(--color-line);
+}

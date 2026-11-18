@@ -18,6 +18,10 @@ const nextConfig: NextConfig = {
   // Cache Components (on in the default template) is left off: every page here
   // is static, and it requires the Node.js runtime, which would limit hosting
   // on Cloudflare Workers.
+  // CV uploads on the careers form go through a server action (CVs up to 4 MB).
+  experimental: {
+    serverActions: { bodySizeLimit: "5mb" },
+  },
   async redirects() {
     return moved.map(([source, destination]) => ({ source, destination, permanent: true }));
   },
