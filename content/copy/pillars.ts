@@ -1,0 +1,306 @@
+import type { PillarCopy } from "./types";
+
+export const pillarCopy: PillarCopy[] = [
+  {
+    slug: "strategy-consulting",
+    headline: "Decide what to build before you spend on building it",
+    lead: "We help you turn a business goal into a technology plan with clear priorities, costs and risks. You get a decision you can defend, not a slide deck of options.",
+    overview: [
+      "Most technology spending goes wrong before any code is written. The goal is vague, the scope keeps growing, or the chosen platform does not fit how the business works. Strategy work exists to settle those questions early, while changing direction is still cheap.",
+      "Clients come to us at a few common moments. A traditional business wants to move its operations onto software. A founder has an idea and needs to know what the first release should contain. A technology head has inherited a system and needs an independent view of its condition.",
+      "In each case the output is practical. You get a written assessment of where you stand, a prioritised plan, and an estimate of the effort involved. You can take that plan to any team, including your own.",
+    ],
+    approach: [
+      {
+        title: "Understand the business",
+        text: "We talk to the people who run and use your systems, and we study how work moves through the organisation today. We agree on the outcome you want and how you will measure it.",
+      },
+      {
+        title: "Assess what exists",
+        text: "We review your current software, data, infrastructure and team capacity. We record what works, what holds you back and what carries risk.",
+      },
+      {
+        title: "Set options and priorities",
+        text: "We lay out the realistic options with the trade-offs of each, including cost drivers and dependencies. We recommend one and explain why.",
+      },
+      {
+        title: "Plan the delivery",
+        text: "We turn the chosen direction into a phased roadmap with scope, sequence and ownership for each phase. The plan is written so that any competent team can act on it.",
+      },
+    ],
+    technologies: [
+      "Figma",
+      "FigJam",
+      "Miro",
+      "Jira",
+      "Confluence",
+      "Notion",
+      "Google Analytics",
+      "SonarQube",
+      "Lighthouse",
+      "AWS",
+      "Microsoft Azure",
+      "Google Cloud",
+    ],
+  },
+  {
+    slug: "experience-design",
+    headline: "Products and brands that people understand at first use",
+    lead: "We design interfaces, identities and visual content around what your users need to do. The work is tested with real people and handed to engineers in a form they can build.",
+    overview: [
+      "Design problems show up as business problems. Visitors leave without enquiring, users call support for tasks the product should make obvious, and each new screen looks slightly different from the last. These are signs that design decisions were made screen by screen instead of from an understanding of the user.",
+      "We work on four areas: product and website interfaces, brand identity, motion and 3D content, and design systems. They can be taken separately or together. A new product often needs all four, while an established one may only need its key journeys reworked.",
+      "The result is a product that takes less effort to use and a brand that looks consistent wherever it appears. Your engineers receive specifications they can implement without guessing, which shortens the build that follows.",
+    ],
+    approach: [
+      {
+        title: "Research",
+        text: "We learn who your users are, what they are trying to do and where the current experience fails them. We use interviews, analytics and a review of comparable products.",
+      },
+      {
+        title: "Structure",
+        text: "We map the journeys and the information each screen has to carry. Wireframes let you agree on the flow before any visual work begins.",
+      },
+      {
+        title: "Design and prototype",
+        text: "We produce the visual design and a clickable prototype that behaves like the real product. You review it on the devices your users will use.",
+      },
+      {
+        title: "Test and hand over",
+        text: "We test the prototype with users, revise what does not work, and prepare specifications, assets and components for the engineering team.",
+      },
+    ],
+    technologies: [
+      "Figma",
+      "FigJam",
+      "Adobe Illustrator",
+      "Adobe Photoshop",
+      "Adobe InDesign",
+      "Adobe After Effects",
+      "Blender",
+      "Cinema 4D",
+      "Lottie",
+      "GSAP",
+      "Three.js",
+      "Storybook",
+      "Maze",
+    ],
+  },
+  {
+    slug: "product-engineering",
+    headline: "Software that ships on plan and holds up in production",
+    lead: "We design, build and test websites, web applications, mobile apps and business systems. You see working software at regular intervals and you own what we build.",
+    overview: [
+      "Clients come to us when they need software built and do not have the team, the time or the specific skills in-house. Sometimes it is a new product. Sometimes it is an existing system that has become slow, fragile or expensive to change.",
+      "Our engineering work covers the full range: public websites and online stores, web applications and SaaS products, Android and iOS apps, enterprise systems such as ERP and CRM, payment platforms, and newer areas such as connected devices and augmented reality. Testing runs alongside development on every project.",
+      "What changes for you is predictability. Scope is agreed in writing, progress is visible in working software, and the code is documented so your own team or another supplier can take it forward.",
+    ],
+    approach: [
+      {
+        title: "Define",
+        text: "We agree on scope, users, integrations and acceptance criteria. We choose the architecture and technology stack and explain the reasons for each choice.",
+      },
+      {
+        title: "Build in iterations",
+        text: "We deliver in short cycles, each ending with working software you can review. Priorities can be adjusted between cycles through an agreed change process.",
+      },
+      {
+        title: "Test and secure",
+        text: "Code is reviewed and tested as it is written. Before release we run functional, performance and security checks against the agreed criteria.",
+      },
+      {
+        title: "Release and support",
+        text: "We deploy to production, monitor the first period of live use, and hand over code, documentation and access. Ongoing support is available under a separate plan.",
+      },
+    ],
+    technologies: [
+      "React",
+      "Next.js",
+      "TypeScript",
+      "Node.js",
+      "Laravel",
+      "Python",
+      "Flutter",
+      "React Native",
+      "Kotlin",
+      "Swift",
+      "PostgreSQL",
+      "MySQL",
+      "Docker",
+      "AWS",
+    ],
+  },
+  {
+    slug: "ai-data",
+    headline: "AI and data applied to problems your business has today",
+    lead: "We build AI assistants, automation, machine learning models and reporting systems on top of your own data. Each project starts from a defined task and a way to measure whether it is done well.",
+    overview: [
+      "Interest in AI is high, but many organisations are unsure where it fits. The useful starting points are usually ordinary: enquiries that wait too long for an answer, documents that staff retype by hand, reports that take days to assemble, decisions made without the data that already exists.",
+      "We work across four areas. Generative AI and agents handle conversations and tasks. Automation removes repetitive manual steps. Machine learning predicts, classifies and recommends. Data and analytics work makes your numbers reliable and available.",
+      "We are careful about what AI should and should not decide on its own. Systems are built with human review where the stakes require it, with logs of what the system did, and with controls over what data leaves your environment.",
+    ],
+    approach: [
+      {
+        title: "Pick the right problem",
+        text: "We identify the tasks where AI or automation would save real effort, and we check that the data needed exists. We agree on how success will be measured.",
+      },
+      {
+        title: "Prepare the data",
+        text: "We collect, clean and structure the data the system will rely on. We agree on access rules and on what may be sent to third-party services.",
+      },
+      {
+        title: "Build and evaluate",
+        text: "We build a working version and test it against real examples from your business. Results are measured and shared with you before anything goes live.",
+      },
+      {
+        title: "Deploy and monitor",
+        text: "We connect the system to your existing software, add monitoring and human review points, and keep improving it as usage shows where it falls short.",
+      },
+    ],
+    technologies: [
+      "Python",
+      "OpenAI API",
+      "Anthropic Claude",
+      "LangChain",
+      "PyTorch",
+      "TensorFlow",
+      "scikit-learn",
+      "Hugging Face",
+      "PostgreSQL",
+      "BigQuery",
+      "Snowflake",
+      "Apache Airflow",
+      "Power BI",
+      "n8n",
+    ],
+  },
+  {
+    slug: "cloud-security",
+    headline: "Systems that stay fast, available and protected",
+    lead: "We set up and run cloud infrastructure, automate releases, and find and fix security weaknesses. The aim is fewer incidents and a clear picture of your risk.",
+    overview: [
+      "Infrastructure and security usually get attention only after something breaks. A site goes down during a busy period, a release causes an outage, a cloud bill grows without explanation, or a customer asks for proof that their data is safe.",
+      "We cover three connected areas. Cloud work covers setup, migration, monitoring, backup and performance. DevOps work makes releases repeatable and low risk. Cybersecurity work covers audits, penetration testing, incident clean-up, compliance and staff training.",
+      "After the work, your infrastructure is described in code, releases follow a tested path, backups are proven to restore, and known security issues are listed with a fix or an accepted risk against each one.",
+    ],
+    approach: [
+      {
+        title: "Assess",
+        text: "We review your infrastructure, release process and security posture. We record the current state and the gaps in order of risk.",
+      },
+      {
+        title: "Design",
+        text: "We propose a target setup that fits your workload, budget and compliance needs. Trade-offs between cost, speed and resilience are made explicit.",
+      },
+      {
+        title: "Implement",
+        text: "We make changes in stages, with rollback plans, so live services are not put at risk. Infrastructure is defined in code and kept in version control.",
+      },
+      {
+        title: "Operate and improve",
+        text: "We set up monitoring, alerts and runbooks, then either hand over to your team or run the systems for you. Findings from incidents feed back into the setup.",
+      },
+    ],
+    technologies: [
+      "AWS",
+      "Microsoft Azure",
+      "Google Cloud",
+      "Docker",
+      "Kubernetes",
+      "Terraform",
+      "GitHub Actions",
+      "GitLab CI",
+      "Nginx",
+      "Cloudflare",
+      "Prometheus",
+      "Grafana",
+      "OWASP ZAP",
+      "Burp Suite",
+    ],
+  },
+  {
+    slug: "growth-marketing",
+    headline: "Reach the right customers and know what each channel returns",
+    lead: "We plan and run search, advertising, content and automated campaigns, with tracking that connects spend to enquiries and sales. You see what is working and what is not.",
+    overview: [
+      "Many organisations market on several channels without knowing which one brings in business. Budgets follow habit, reports show clicks instead of customers, and the website loses visitors who were ready to enquire.",
+      "Our marketing work covers search engine optimisation, paid advertising, social media and content, and marketing automation. Because we also build websites and software, we can fix the technical causes of weak results, such as slow pages or broken tracking, instead of working around them.",
+      "We do not promise rankings or sales figures. We agree on goals, set up measurement you can check yourself, and report plainly on what the numbers show so you can decide where to put the next unit of budget.",
+    ],
+    approach: [
+      {
+        title: "Audit and measure",
+        text: "We review your current channels, website and tracking. We fix measurement first so that later decisions rest on accurate data.",
+      },
+      {
+        title: "Plan",
+        text: "We agree on audiences, channels, messages and budget. Each activity has a goal and a number that shows whether it is being met.",
+      },
+      {
+        title: "Run",
+        text: "We produce the content, build the campaigns and manage them day to day. You approve creative work and spending before it goes out.",
+      },
+      {
+        title: "Report and adjust",
+        text: "We report on results against the agreed goals at regular intervals. Budget and effort move towards what performs and away from what does not.",
+      },
+    ],
+    technologies: [
+      "Google Analytics",
+      "Google Search Console",
+      "Google Tag Manager",
+      "Google Ads",
+      "Meta Ads Manager",
+      "LinkedIn Campaign Manager",
+      "Semrush",
+      "Ahrefs",
+      "HubSpot",
+      "Mailchimp",
+      "Hotjar",
+      "Looker Studio",
+    ],
+  },
+  {
+    slug: "managed-services",
+    headline: "Keep your products running and add capacity when you need it",
+    lead: "We maintain and support live websites and applications, and we provide developers who work as part of your team. You get continuity without having to hire for every skill.",
+    overview: [
+      "Software needs attention after launch. Dependencies go out of date, security patches arrive, traffic grows, and users find issues that testing missed. Without a named owner these jobs are skipped until they cause an outage.",
+      "Other clients have the opposite problem. They have a roadmap and a capable team, but not enough people, or not the right specialist, to deliver it. Hiring takes time and the need may not be permanent.",
+      "We address both. Maintenance plans give a live product a team responsible for its upkeep, with agreed response times. Dedicated teams and team extension give you engineers who follow your process, use your tools and report to your leads.",
+    ],
+    approach: [
+      {
+        title: "Take stock",
+        text: "For support work we audit the product, its hosting and its documentation. For team work we learn your roadmap, your stack and the skills you are missing.",
+      },
+      {
+        title: "Agree terms",
+        text: "We agree on scope, response times, working hours, communication channels and how work is requested and approved. Everything is written down.",
+      },
+      {
+        title: "Onboard",
+        text: "We get access, set up monitoring and environments, and meet the people we will work with. Developers joining your team adopt your tools and conventions.",
+      },
+      {
+        title: "Run and review",
+        text: "Work proceeds against the agreed terms, with regular reports on what was done. We review the arrangement with you periodically and adjust capacity as your needs change.",
+      },
+    ],
+    technologies: [
+      "Jira",
+      "Slack",
+      "GitHub",
+      "GitLab",
+      "Sentry",
+      "UptimeRobot",
+      "Grafana",
+      "Cloudflare",
+      "WordPress",
+      "Laravel",
+      "React",
+      "Node.js",
+      "AWS",
+    ],
+  },
+];
