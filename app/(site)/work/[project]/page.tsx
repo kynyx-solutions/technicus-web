@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Art, type ArtKind } from "@/components/art";
-import { ClosingCall, DevNote, Features, Hero, Intro, Section } from "@/components/ui";
+import { ArrowCircle, ClosingCall, DevNote, Features, Hero, Intro, Section } from "@/components/ui";
 import { getCapabilityCopy, getIndustryCopy } from "@/content/copy";
 import { pageSeo } from "@/content/seo";
 import { getPillar, pillars } from "@/content/services";
@@ -73,8 +73,8 @@ export default async function CaseStudyPage({ params }: Props) {
         ]}
         title={project.summary.replace(/\.$/, "")}
         media={
-          <div className="relative aspect-[4/3] overflow-hidden rounded-[20px] bg-[#e8e6f7] md:aspect-[16/8] md:rounded-[28px]">
-            <Art kind={KINDS[index % KINDS.length]} tone="light" className="absolute inset-x-0 bottom-0 mx-auto h-[70%] w-auto" />
+          <div className="grid-pattern-dark relative flex aspect-[4/3] items-center justify-center overflow-hidden rounded-xl bg-navy p-6">
+            <Art kind={KINDS[index % KINDS.length]} tone="dark" className="h-full w-full" />
           </div>
         }
       />
@@ -139,8 +139,8 @@ export default async function CaseStudyPage({ params }: Props) {
           <ul className="grid gap-10 md:grid-cols-3">
             {project.outcomes.map((o) => (
               <li key={o.label} data-reveal>
-                <p className="display">{o.value}</p>
-                <p className="mt-3 text-white/60">{o.label}</p>
+                <p className="font-heading text-[2.8rem] leading-none font-bold text-[#8fb2ff]">{o.value}</p>
+                <p className="mt-3 text-white/70">{o.label}</p>
               </li>
             ))}
           </ul>
@@ -149,21 +149,24 @@ export default async function CaseStudyPage({ params }: Props) {
 
       {project.quote && (
         <Section>
-          <figure className="rounded-[24px] bg-mint p-10 md:p-16">
+          <figure className="rounded-xl border border-line bg-sky p-8 md:p-12">
             <blockquote className="h3" data-reveal>
               &ldquo;{project.quote.text}&rdquo;
             </blockquote>
-            <figcaption className="mt-8 text-black/60" data-reveal>
+            <figcaption className="mt-6 text-muted" data-reveal>
               {project.quote.name}, {project.quote.role}
             </figcaption>
           </figure>
         </Section>
       )}
 
-      <section data-tone="light" className="panel bg-fog pb-16 md:pb-24">
-        <Link href={`/work/${next.slug}`} data-cursor="Next" className="group inner block pt-20 pb-16 md:pt-28">
-          <p className="label mb-5 text-black/50">Next project</p>
-          <p className="display transition-opacity duration-300 group-hover:opacity-60">{next.client}</p>
+      <section className="border-t border-line bg-mist">
+        <Link href={`/work/${next.slug}`} className="group inner flex items-center justify-between gap-6 py-12">
+          <span>
+            <span className="label block text-blue">Next case study</span>
+            <span className="h2 mt-2 block transition-colors group-hover:text-blue">{next.client}</span>
+          </span>
+          <ArrowCircle />
         </Link>
       </section>
 

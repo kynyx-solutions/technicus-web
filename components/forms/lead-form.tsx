@@ -100,10 +100,10 @@ export function LeadForm({ type, services = [], defaults, tone = "light" }: Prop
   const value = (field: string) => state.values?.[field] ?? defaults?.[field] ?? (field === "timeZone" ? zone : "");
   const chosen = (field: string) => value(field).split(", ").filter(Boolean);
 
-  const pill = `inline-flex cursor-pointer items-center rounded-full border px-5 py-3 text-lg leading-none transition-colors md:px-6 md:text-[1.35rem] ${
+  const pill = `inline-flex cursor-pointer items-center rounded-md border px-4 py-2.5 text-[0.95rem] leading-none font-medium transition-colors ${
     dark
-      ? "border-white/40 peer-checked:border-white peer-checked:bg-white peer-checked:text-black hover:border-white"
-      : "border-black/30 peer-checked:border-black peer-checked:bg-black peer-checked:text-white hover:border-black"
+      ? "border-white/30 peer-checked:border-white peer-checked:bg-white peer-checked:text-navy hover:border-white"
+      : "border-line bg-white peer-checked:border-blue peer-checked:bg-blue peer-checked:text-white hover:border-blue"
   } peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-indigo`;
 
   return (
@@ -134,7 +134,7 @@ export function LeadForm({ type, services = [], defaults, tone = "light" }: Prop
           const multiple = field.kind === "chips";
           return (
             <fieldset key={field.name} className="md:col-span-2" aria-describedby={error ? `${fieldId}-error` : undefined}>
-              <legend className={`mb-5 text-xl md:text-2xl ${dark ? "text-white" : "text-black"}`}>{field.label}</legend>
+              <legend className={`mb-3 font-heading text-[1.05rem] font-semibold ${dark ? "text-white" : "text-ink"}`}>{field.label}</legend>
               <div className="flex flex-wrap gap-2.5 md:gap-3">
                 {options.map((option) => (
                   <label key={option}>
@@ -199,7 +199,7 @@ export function LeadForm({ type, services = [], defaults, tone = "light" }: Prop
       </div>
 
       <div className="flex flex-wrap items-center gap-6 md:col-span-2">
-        <button type="submit" disabled={pending} className={`${dark ? "btn-light" : "btn-dark"} px-8 py-5 text-lg disabled:opacity-60`} data-magnetic>
+        <button type="submit" disabled={pending} className={`${dark ? "btn-light" : "btn-dark"} px-8 py-5 text-lg disabled:opacity-60`}>
           {pending ? "Sending…" : config.submit}
         </button>
         <p role="status" aria-live="polite" className="text-[0.95rem] text-[#d6336c]">

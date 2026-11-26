@@ -1,8 +1,8 @@
 import Link from "next/link";
-import { industryCards, insightCards, pillarStack, workItems } from "@/components/lists";
 import { ClientLogos } from "@/components/home/client-logos";
-import { TestimonialPile } from "@/components/home/testimonial-pile";
-import { Showreel } from "@/components/showreel";
+import { HeroPanel } from "@/components/home/hero-panel";
+import { Testimonials } from "@/components/home/testimonials";
+import { industryCards, insightCards, pillarStack, workItems } from "@/components/lists";
 import { Cards, ClosingCall, DevNote, Faqs, Hero, Intro, PostCards, Section, ServiceStack, Stats, Steps, WorkGrid } from "@/components/ui";
 import { method } from "@/content/company";
 import { getArticles, getHome, getProjects, getTestimonials } from "@/lib/cms";
@@ -14,28 +14,14 @@ export async function generateMetadata() {
 }
 
 export default async function Home() {
-  const [home, quotes] = await Promise.all([getHome(), getTestimonials()]);
+  const [home, quotes, projects, articles] = await Promise.all([getHome(), getTestimonials(), getProjects(), getArticles()]);
   const { clients, stats } = home;
   return (
     <>
-      <Hero
-        title={home.heroTitle}
-        lead={home.heroLead}
-        media={<Showreel className="aspect-[4/3] sm:aspect-[16/10] lg:aspect-video" />}
-      />
-
-      <Section>
-        <Intro
-          label="What we do"
-          text={home.introText}
-        />
-        <div className="mt-12 md:mt-16">
-          <ServiceStack items={pillarStack()} />
-        </div>
-      </Section>
+      <Hero eyebrow="Technology consultancy" title={home.heroTitle} lead={home.heroLead} actions media={<HeroPanel />} />
 
       {clients.length > 0 ? (
-        <Section title="Trusted by" center>
+        <Section tone="grey" title="Trusted by" center>
           <ClientLogos clients={clients} />
         </Section>
       ) : (
@@ -44,21 +30,38 @@ export default async function Home() {
         </div>
       )}
 
-      <Section
-        tone="dark"
-        title={home.workTitle}
-        action={
-          <Link href="/work" className="btn-outline-light px-7 py-4" data-magnetic>
-            All work
+      <Section eyebrow="What we do" title="Services across the whole technology lifecycle" lead={home.introText}>
+        <ServiceStack items={pillarStack()} />
+      </Section>
+
+      {stats.length > 0 && (
+        <Section tone="grey">
+          <Stats items={stats} />
+        </Section>
+      )}
+
+      <Section tone="grey" eyebrow="How we work" title="A clear process, from first question to running system">
+        <Intro label="Our method" text={home.howText}>
+          <Link href="/about/how-we-work" className="btn-outline mt-8" data-reveal>
+            How we work with clients
           </Link>
-        }
-      >
-        <WorkGrid items={workItems(await getProjects(), undefined, 6)} />
+        </Intro>
+        <div className="mt-12">
+          <Steps steps={method} />
+        </div>
+      </Section>
+
+      <Section eyebrow="Industries" title={home.industriesTitle} lead={home.industriesLead} action={<Link href="/industries" className="btn-outline">All industries</Link>}>
+        <Cards columns={4} items={industryCards()} />
+      </Section>
+
+      <Section tone="grey" eyebrow="Case studies" title={home.workTitle} action={<Link href="/work" className="btn-outline">All case studies</Link>}>
+        <WorkGrid items={workItems(projects, undefined, 6)} />
       </Section>
 
       {quotes.length > 0 ? (
-        <Section title="Trusted by our clients" center>
-          <TestimonialPile items={quotes} />
+        <Section eyebrow="Testimonials" title="Trusted by our clients">
+          <Testimonials items={quotes} />
         </Section>
       ) : (
         <div className="inner">
@@ -66,43 +69,12 @@ export default async function Home() {
         </div>
       )}
 
-      <Section>
-        <Intro
-          label="How we work"
-          text={home.howText}
-        >
-          <Link href="/about/how-we-work" className="btn-outline mt-8 px-7 py-4" data-reveal>
-            How we work with clients
-          </Link>
-        </Intro>
-        <div className="mt-10 md:mt-14">
-          <Steps steps={method} />
-        </div>
-        {stats.length > 0 && (
-          <div className="mt-4">
-            <Stats items={stats} />
-          </div>
-        )}
-      </Section>
-
-      <Section title={home.industriesTitle} lead={home.industriesLead}>
-        <Cards columns={4} items={industryCards()} />
-      </Section>
-
-      <Section
-        tone="dark"
-        title={home.insightsTitle}
-        action={
-          <Link href="/insights" className="btn-outline-light px-7 py-4" data-magnetic>
-            All insights
-          </Link>
-        }
-      >
-        <PostCards items={insightCards(await getArticles())} />
+      <Section tone="grey" eyebrow="Insights" title={home.insightsTitle} action={<Link href="/insights" className="btn-outline">All insights</Link>}>
+        <PostCards items={insightCards(articles)} />
       </Section>
 
       {home.faqs.length > 0 && (
-        <Section title="Questions about our technology consultancy">
+        <Section eyebrow="FAQ" title="Questions about our technology consultancy">
           <Faqs faqs={home.faqs} />
         </Section>
       )}

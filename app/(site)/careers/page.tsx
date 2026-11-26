@@ -44,7 +44,7 @@ export default async function CareersPage() {
           <ul className="space-y-3">
             {roles.map((role) => (
               <li key={role.slug} data-reveal>
-                <Link href={`/careers/${role.slug}`} className="group flex flex-wrap items-center justify-between gap-6 rounded-[22px] bg-white p-7 md:p-9">
+                <Link href={`/careers/${role.slug}`} className="group flex flex-wrap items-center justify-between gap-6 rounded-xl border border-line bg-white p-6 transition-colors hover:border-blue/40 md:p-7">
                   <span>
                     <span className="block text-[1.6rem] leading-tight font-medium tracking-[-0.01em]">
                       {role.title}

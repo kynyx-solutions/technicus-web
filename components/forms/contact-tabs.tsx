@@ -18,7 +18,7 @@ export function ContactTabs({ services }: { services: string[] }) {
 
   return (
     <div>
-      <div role="tablist" aria-label="How would you like to start?" className="inline-flex flex-wrap gap-1.5 rounded-full bg-fog p-1.5">
+      <div role="tablist" aria-label="How would you like to start?" className="inline-flex flex-wrap gap-1 rounded-lg border border-line bg-mist p-1">
         {tabs.map((tab) => (
           <button
             key={tab.id}
@@ -28,15 +28,15 @@ export function ContactTabs({ services }: { services: string[] }) {
             aria-selected={active === tab.id}
             aria-controls="contact-panel"
             onClick={() => setActive(tab.id)}
-            className={`rounded-full px-5 py-3 text-[1.05rem] transition-colors md:px-6 ${
-              active === tab.id ? "bg-black text-white" : "text-black/60 hover:text-black"
+            className={`rounded-md px-5 py-2.5 text-[0.95rem] font-semibold transition-colors ${
+              active === tab.id ? "bg-blue text-white shadow-sm" : "text-muted hover:text-navy"
             }`}
           >
             {tab.label}
           </button>
         ))}
       </div>
-      <p className="mt-5 mb-14 text-lg text-black/60">{current.text}</p>
+      <p className="mt-4 mb-10 text-muted">{current.text}</p>
       <div id="contact-panel" role="tabpanel" aria-labelledby={`tab-${current.id}`}>
         <LeadForm key={current.id} type={current.id} services={services} />
       </div>

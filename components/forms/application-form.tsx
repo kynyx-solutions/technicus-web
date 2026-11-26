@@ -75,12 +75,12 @@ export function ApplicationForm({ roles, role }: Props) {
         <input type="hidden" name="role" value={role} />
       ) : (
         <fieldset className="md:col-span-2">
-          <legend className="mb-5 text-xl text-white md:text-2xl">I&apos;m applying for…</legend>
+          <legend className="mb-3 font-heading text-[1.05rem] font-semibold text-white">I&apos;m applying for…</legend>
           <div className="flex flex-wrap gap-2.5 md:gap-3">
             {options.map((option) => (
               <label key={option}>
                 <input type="radio" name="role" value={option} defaultChecked={(value("role") || OPEN) === option} className="peer sr-only" />
-                <span className="inline-flex cursor-pointer items-center rounded-full border border-white/40 px-5 py-3 text-lg leading-none transition-colors peer-checked:border-white peer-checked:bg-white peer-checked:text-black peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-indigo hover:border-white md:px-6 md:text-[1.35rem]">
+                <span className="inline-flex cursor-pointer items-center rounded-md border border-white/30 px-4 py-2.5 text-[0.95rem] leading-none font-medium transition-colors peer-checked:border-white peer-checked:bg-white peer-checked:text-navy peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-indigo hover:border-white">
                   {option}
                 </span>
               </label>
@@ -128,7 +128,7 @@ export function ApplicationForm({ roles, role }: Props) {
       </div>
 
       <div className="flex flex-wrap items-center gap-6 md:col-span-2">
-        <button type="submit" disabled={pending} className="btn-light px-8 py-5 text-lg disabled:opacity-60" data-magnetic>
+        <button type="submit" disabled={pending} className="btn-light px-8 py-5 text-lg disabled:opacity-60">
           {pending ? "Sending…" : "Send application"}
         </button>
         <p role="status" aria-live="polite" className="text-[0.95rem] text-[#ff6b9a]">

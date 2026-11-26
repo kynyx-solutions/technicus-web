@@ -52,15 +52,15 @@ export default async function ArticlePage({ params }: Props) {
       </Hero>
 
       {/* Reading column: plain, with no scroll effects. */}
-      <article data-tone="light" className="panel bg-fog pt-12 pb-20 md:pt-20 md:pb-28">
+      <article data-tone="light" className="bg-mist py-14 md:py-20">
         <div className="mx-auto max-w-[44rem] px-5 text-lg leading-relaxed md:px-0 md:text-[1.2rem] md:leading-[1.7]">
           {article.coverImage && (
             // eslint-disable-next-line @next/next/no-img-element
-            <img src={article.coverImage} alt="" className="mb-12 aspect-[21/9] w-full rounded-[22px] object-cover" />
+            <img src={article.coverImage} alt="" className="mb-12 aspect-[21/9] w-full rounded-xl object-cover" />
           )}
           <div className="article-body" dangerouslySetInnerHTML={{ __html: cleanHtml(article.html) }} />
           {author && (
-            <div className="mt-16 rounded-[22px] bg-white p-8">
+            <div className="mt-16 rounded-xl border border-line bg-white p-8">
               <p className="label mb-3 text-black/50">Written by</p>
               <Link href={`/insights/authors/${author.slug}`} className="sweep text-2xl font-medium">
                 {author.name}

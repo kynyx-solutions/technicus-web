@@ -38,7 +38,7 @@ export default async function RolePage({ params }: Props) {
         lead={role.summary}
       >
         {role.published === false && (
-          <p className="mt-8 inline-block rounded-xl border border-dashed border-indigo bg-lavender px-4 py-3 font-mono text-xs" data-reveal>
+          <p className="mt-8 inline-block rounded-xl border border-dashed border-blue bg-sky px-4 py-3 font-mono text-xs" data-reveal>
             Draft role. Visible only while developing. It is not advertised and is not in the production site.
           </p>
         )}

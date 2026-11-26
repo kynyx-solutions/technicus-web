@@ -1,108 +1,106 @@
 @import "tailwindcss";
 
 /*
-  Visual direction follows the main reference, Cuberto (docs/REVAMP_PLAN.md,
-  section 6): white and black, one clean sans-serif at medium weight, rounded
-  panels, muted indigo only in abstract shapes, soft mint and lavender cards.
-  Everything is set here so the brand phase can change it in one place.
+  Visual direction: a corporate technology consultancy. White and light grey
+  sections, deep navy for dark areas, one strong blue for actions and accents,
+  clear grids, square-ish cards and quiet motion. Everything is set here so the
+  brand phase can change it in one place.
 */
 @theme {
   --color-white: #ffffff;
   --color-black: #000000;
-  --color-ink: #000000;
+  --color-ink: #0f172a;
+  --color-navy: #0b1f3a;
+  --color-navy-2: #12305a;
+  --color-blue: #1a56db;
+  --color-blue-dark: #1544b0;
+  --color-sky: #eaf1ff;
+  --color-mist: #f4f7fb;
+  --color-muted: #5b6476;
+  --color-line: #e2e8f0;
+
+  /* Used by the admin dashboard. */
   --color-coal: #1b1b1b;
   --color-smoke: #ededed;
   --color-fog: #f5f5f5;
-  --color-muted: #6b6b6b;
-  --color-line: #e3e3e3;
   --color-mint: #e2f4f1;
   --color-lavender: #eef1fb;
   --color-indigo: #4c4a86;
   --color-indigo-deep: #23243f;
 
   --font-sans: var(--font-inter), system-ui, sans-serif;
+  --font-heading: var(--font-jakarta), var(--font-inter), system-ui, sans-serif;
 
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 html {
   background: var(--color-white);
-  color: var(--color-black);
+  color: var(--color-ink);
 }
 
 body {
   font-family: var(--font-sans);
-  font-size: 17px;
-  line-height: 1.5;
+  font-size: 16px;
+  line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
 
 @media (min-width: 768px) {
   body {
-    font-size: 18px;
+    font-size: 17px;
   }
 }
 
 ::selection {
-  background: var(--color-black);
+  background: var(--color-blue);
   color: var(--color-white);
 }
 
 :focus-visible {
-  outline: 2px solid var(--color-indigo);
+  outline: 2px solid var(--color-blue);
   outline-offset: 3px;
 }
 
-/* Lenis smooth scroll */
-html.lenis,
-html.lenis body {
-  height: auto;
-}
-.lenis.lenis-smooth {
-  scroll-behavior: auto !important;
-}
-.lenis.lenis-stopped {
-  overflow: hidden;
-}
-
-/* Wide container: header, hero media, footer. */
+/* Page container. */
 @utility shell {
-  @apply mx-auto w-full max-w-[1224px] px-5 md:px-8 xl:px-0;
+  @apply mx-auto w-full max-w-[1240px] px-5 md:px-8;
 }
-/* Reading container: most sections. */
+/* Same width as the shell, so every section lines up on one grid. */
 @utility inner {
-  @apply mx-auto w-full max-w-[1008px] px-5 md:px-8 xl:px-0;
+  @apply mx-auto w-full max-w-[1240px] px-5 md:px-8;
 }
 @utility display {
-  @apply text-[clamp(2.6rem,5.7vw,5.1rem)] leading-[1] font-[560] tracking-[-0.02em] text-balance;
+  @apply font-heading text-[clamp(2.25rem,4.4vw,3.6rem)] leading-[1.08] font-bold tracking-[-0.025em] text-balance;
 }
 @utility h2 {
-  @apply text-[clamp(2.2rem,5vw,4.5rem)] leading-[1] font-[560] tracking-[-0.025em] text-balance;
+  @apply font-heading text-[clamp(1.8rem,3vw,2.5rem)] leading-[1.15] font-bold tracking-[-0.02em] text-balance;
 }
 @utility h3 {
-  @apply text-[1.65rem] leading-[1.15] font-normal tracking-[-0.01em] md:text-[2.25rem];
+  @apply font-heading text-[1.2rem] leading-snug font-semibold tracking-[-0.01em] md:text-[1.3rem];
 }
 @utility lead {
-  @apply text-lg leading-snug md:text-[1.3rem];
+  @apply text-[1.05rem] leading-relaxed md:text-[1.2rem];
 }
 @utility label {
-  @apply text-[0.8rem] tracking-[0.02em] uppercase md:text-[0.875rem];
+  @apply text-[0.78rem] font-semibold tracking-[0.12em] uppercase;
 }
 @utility btn {
-  @apply inline-flex items-center justify-center gap-2.5 rounded-full px-6 py-3.5 text-[1.05rem] leading-none font-medium transition-[background-color,color,border-color] duration-300;
+  @apply inline-flex items-center justify-center gap-2 rounded-md px-6 py-3.5 text-[0.95rem] leading-none font-semibold transition-[background-color,color,border-color,box-shadow] duration-200;
 }
+/* The main action: blue. */
 @utility btn-dark {
-  @apply btn bg-black text-white hover:bg-coal;
+  @apply btn bg-blue text-white shadow-[0_1px_2px_rgba(15,23,42,0.12)] hover:bg-blue-dark;
 }
 @utility btn-light {
-  @apply btn bg-white text-black hover:bg-smoke;
+  @apply btn bg-white text-navy hover:bg-sky;
 }
 @utility btn-outline {
-  @apply btn border border-current hover:border-black hover:bg-black hover:text-white;
+  @apply btn border border-navy/20 text-navy hover:border-blue hover:text-blue;
 }
 @utility btn-outline-light {
-  @apply btn border border-white/60 text-white hover:bg-white hover:text-black;
+  @apply btn border border-white/35 text-white hover:border-white hover:bg-white hover:text-navy;
 }
 /* Underline that sweeps in from the left on hover. */
 @utility sweep {
@@ -110,35 +108,42 @@ html.lenis body {
   background-size: 0% 1px;
   background-position: 0 100%;
   background-repeat: no-repeat;
-  transition: background-size 0.45s var(--ease-out-expo);
+  transition: background-size 0.35s var(--ease-out-expo);
   &:hover,
   &:focus-visible,
   &[aria-current="page"] {
     background-size: 100% 1px;
   }
 }
-/* A section that slides over the one before it with rounded top corners. */
+/* Kept for older markup: sections no longer overlap. */
 @utility panel {
-  @apply relative -mt-8 rounded-t-[32px] md:-mt-12 md:rounded-t-[48px] lg:-mt-16 lg:rounded-t-[64px];
+  @apply relative;
 }
 @utility field {
-  @apply w-full border-b border-current/25 bg-transparent py-3 text-xl outline-none transition-colors placeholder:text-current/35 focus:border-current md:text-2xl;
+  @apply w-full rounded-md border border-current/25 bg-transparent px-4 py-3 text-base outline-none transition-colors placeholder:text-current/40 focus:border-blue;
+}
+/* A faint technical grid, for heroes and dark bands. */
+@utility grid-pattern {
+  background-image: linear-gradient(to right, rgba(26, 86, 219, 0.07) 1px, transparent 1px), linear-gradient(to bottom, rgba(26, 86, 219, 0.07) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+@utility grid-pattern-dark {
+  background-image: linear-gradient(to right, rgba(255, 255, 255, 0.06) 1px, transparent 1px), linear-gradient(to bottom, rgba(255, 255, 255, 0.06) 1px, transparent 1px);
+  background-size: 48px 48px;
 }
 
-/* Lines are revealed from behind a mask. The padding keeps the tails of
-   letters such as g and y from being cut off by it. */
-.split-line-mask {
-  padding-bottom: 0.14em;
-  margin-bottom: -0.14em;
-}
-
-/* Text and blocks that animate in start hidden only when scripts are running
-   and motion is allowed, so the page is complete without JavaScript. */
+/* Blocks fade up as they come into view, only when scripts run and motion is
+   allowed, so the page is complete without JavaScript. */
 html.js-motion [data-reveal] {
   opacity: 0;
+  transform: translateY(14px);
+  transition:
+    opacity 0.6s ease,
+    transform 0.6s var(--ease-out-expo);
 }
-html.js-motion [data-split] {
-  visibility: hidden;
+html.js-motion [data-reveal].is-in {
+  opacity: 1;
+  transform: none;
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -24,24 +24,24 @@ export default async function InsightsPage() {
       <Hero eyebrow="Technology insights" crumbs={[{ href: "/insights", name: "Insights" }]} title="Insights" lead="Practical writing for people who make technology decisions." />
 
       <Section>
-        <Link href={`/insights/${featured.slug}`} className="group grid items-center gap-8 md:grid-cols-2 md:gap-14" data-reveal data-cursor="Read">
-          <span className="relative block aspect-[4/3] overflow-hidden rounded-[22px] bg-lavender">
+        <Link href={`/insights/${featured.slug}`} className="group grid items-center gap-8 overflow-hidden rounded-xl border border-line bg-white md:grid-cols-2 md:gap-0" data-reveal>
+          <span className="relative block aspect-[4/3] overflow-hidden bg-sky md:aspect-auto md:h-full md:min-h-[360px]">
             {featured.coverImage ? (
               // eslint-disable-next-line @next/next/no-img-element
               <img src={featured.coverImage} alt="" className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" />
             ) : (
-              <Art kind="hexagon" tone="light" className="absolute inset-x-0 bottom-0 mx-auto h-[78%] w-auto transition-transform duration-700 group-hover:scale-105" />
+              <Art kind="hexagon" tone="light" className="absolute inset-0 h-full w-full p-8" />
             )}
           </span>
-          <span className="block">
-            <span className="label block text-black/50">
+          <span className="block p-7 md:p-10">
+            <span className="label block text-blue">
               Latest · {featured.kind} · {featured.topic}
             </span>
-            <span className="mt-4 block text-[clamp(1.8rem,3.2vw,2.7rem)] leading-[1.08] font-medium tracking-[-0.02em] transition-opacity group-hover:opacity-70">
+            <span className="h2 mt-3 block transition-colors group-hover:text-blue">
               {featured.title}
             </span>
-            <span className="mt-5 block text-lg text-black/65">{featured.summary}</span>
-            <span className="label mt-6 block text-black/45">
+            <span className="mt-4 block text-muted">{featured.summary}</span>
+            <span className="mt-6 block text-[0.88rem] text-muted">
               {getPerson(featured.author)?.name} · {formatDate(featured.date)} · {featured.readingMinutes} min read
             </span>
           </span>

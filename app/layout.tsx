@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Inter, Plus_Jakarta_Sans } from "next/font/google";
 import { site } from "@/content/site";
 import { getSeoSettings } from "@/lib/cms";
 import "./globals.css";
 
-// Inter stands in for the reference's typeface (Suisse Intl, a paid font).
-// Self-hosted by Next.js. The brand phase may replace it.
+// Plus Jakarta Sans for headings, Inter for text. Self-hosted by Next.js.
+// The brand phase may replace them.
 const inter = Inter({ variable: "--font-inter", subsets: ["latin"], display: "swap" });
+const jakarta = Plus_Jakarta_Sans({ variable: "--font-jakarta", subsets: ["latin"], display: "swap", weight: ["500", "600", "700", "800"] });
 
 export async function generateMetadata(): Promise<Metadata> {
   const seo = await getSeoSettings();
@@ -32,7 +33,7 @@ const motionFlag = `(function(){try{if(matchMedia('(prefers-reduced-motion: redu
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" className={`${inter.variable} h-full`} suppressHydrationWarning>
+    <html lang="en" className={`${inter.variable} ${jakarta.variable} h-full`} suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: motionFlag }} />
       </head>

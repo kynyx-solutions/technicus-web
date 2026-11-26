@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Logo } from "@/components/header";
 import { getArticles, getContactInfo } from "@/lib/cms";
 import { pillars } from "@/content/services";
 import { industries, legalPages, site } from "@/content/site";
@@ -35,11 +36,11 @@ function Icon({ name }: { name: "linkedin" | "x" | "facebook" | "whatsapp" | "in
 function Column({ title, links }: { title: string; links: { href: string; name: string }[] }) {
   return (
     <div>
-      <h2 className="label mb-4 text-white/40">{title}</h2>
-      <ul className="space-y-2 text-[0.95rem] text-white/70">
+      <h2 className="mb-4 font-heading text-[0.95rem] font-semibold text-white">{title}</h2>
+      <ul className="space-y-2.5 text-[0.9rem] text-white/65">
         {links.map((l) => (
           <li key={l.href}>
-            <Link href={l.href} className="sweep hover:text-white">
+            <Link href={l.href} className="hover:text-white">
               {l.name}
             </Link>
           </li>
@@ -61,78 +62,62 @@ export async function Footer() {
   ].filter((s) => s.href);
 
   return (
-    <footer data-tone="dark" className="panel bg-black text-white">
-      <div className="shell grid gap-14 pt-16 pb-16 md:pt-24 lg:grid-cols-12">
-        <div className="space-y-10 lg:col-span-7">
-          <div className="flex flex-wrap gap-3">
-            <a href={`mailto:${contact.email}`} className="btn-outline-light px-5 py-3.5 text-[1.3rem] font-normal md:text-[1.5rem]">
-              {contact.email}
-            </a>
-            <a href={contact.phoneHref} className="btn-outline-light px-5 py-3.5 text-[1.3rem] font-normal md:text-[1.5rem]">
-              {contact.phone}
-            </a>
-          </div>
-          <ul className="grid gap-6 sm:grid-cols-2">
+    <footer data-tone="dark" className="bg-navy text-white">
+      <div className="shell grid gap-12 pt-16 pb-12 lg:grid-cols-12">
+        <div className="lg:col-span-4">
+          <Logo light />
+          <p className="mt-5 max-w-sm text-[0.92rem] leading-relaxed text-white/65">
+            {site.description}
+          </p>
+          <ul className="mt-6 space-y-2 text-[0.92rem]">
+            <li>
+              <a href={`mailto:${contact.email}`} className="text-white hover:text-[#8fb2ff]">
+                {contact.email}
+              </a>
+            </li>
+            <li>
+              <a href={contact.phoneHref} className="text-white hover:text-[#8fb2ff]">
+                {contact.phone}
+              </a>
+            </li>
             {offices.map((o) => (
-              <li key={o.city} className="text-[0.98rem] leading-relaxed">
-                <span className="label mr-2 text-white/45">{o.hq ? "Head office" : "Office"}</span>
+              <li key={o.city} className="pt-2 text-white/60">
+                <span className="block text-[0.75rem] font-semibold tracking-[0.1em] text-white/45 uppercase">{o.hq ? "Head office" : "Office"}</span>
                 {o.lines.join(", ")}
               </li>
             ))}
           </ul>
         </div>
-        <ul className="grid grid-cols-2 gap-x-10 gap-y-3 text-[1.35rem] lg:col-span-5 lg:justify-items-end lg:text-right">
-          {mainLinks.map((l) => (
-            <li key={l.href}>
-              <Link href={l.href} className="sweep">
+        <div className="grid gap-10 sm:grid-cols-2 lg:col-span-8 lg:grid-cols-4">
+          <Column title="Services" links={[...pillars.map((p) => ({ href: `/services/${p.slug}`, name: p.name })), { href: "/technologies", name: "Technologies" }]} />
+          <Column title="Industries" links={industries.map((i) => ({ href: `/industries/${i.slug}`, name: i.name }))} />
+          <Column title="Company" links={mainLinks.filter((l) => !["/services", "/industries"].includes(l.href)).concat([{ href: "/about/trust", name: "Trust" }, { href: "/about/locations", name: "Locations" }, { href: "/india", name: "Technicus in India" }])} />
+          <Column title="Insights" links={[...articles.slice(0, 4).map((a) => ({ href: `/insights/${a.slug}`, name: a.title })), { href: "/insights", name: "All insights" }]} />
+        </div>
+      </div>
+
+      <div className="border-t border-white/10">
+        <div className="shell flex flex-col gap-5 py-6 md:flex-row md:items-center md:justify-between">
+          <div className="flex flex-wrap items-center gap-x-6 gap-y-2 text-[0.85rem] text-white/60">
+            <span>
+              © {new Date().getFullYear()} {site.legalName}
+            </span>
+            {legalPages.map((l) => (
+              <Link key={l.href} href={l.href} className="hover:text-white">
                 {l.name}
               </Link>
-            </li>
-          ))}
-        </ul>
-      </div>
-
-      <div className="shell grid gap-10 border-t border-white/10 py-14 sm:grid-cols-2 lg:grid-cols-4">
-        <Column title="Services" links={[...pillars.map((p) => ({ href: `/services/${p.slug}`, name: p.name })), { href: "/technologies", name: "Technologies" }]} />
-        <Column title="Industries" links={industries.map((i) => ({ href: `/industries/${i.slug}`, name: i.name }))} />
-        <Column title="Insights" links={[...articles.slice(0, 3).map((a) => ({ href: `/insights/${a.slug}`, name: a.title })), { href: "/insights", name: "All insights" }]} />
-        <Column
-          title="Company"
-          links={[
-            { href: "/about/leadership", name: "Leadership" },
-            { href: "/about/trust", name: "Trust" },
-            { href: "/about/locations", name: "Locations" },
-            { href: "/india", name: "Technicus in India" },
-          ]}
-        />
-      </div>
-
-      <div className="shell flex flex-col gap-6 border-t border-white/10 py-8 md:flex-row md:items-center md:justify-between">
-        <div className="flex flex-wrap items-center gap-x-6 gap-y-2 text-[0.95rem]">
-          {legalPages.map((l) => (
-            <Link key={l.href} href={l.href} className="sweep">
-              {l.name}
-            </Link>
-          ))}
-          <span className="text-white/45">
-            © {new Date().getFullYear()} {site.legalName}
-          </span>
+            ))}
+          </div>
+          <ul className="flex gap-2">
+            {social.map((s) => (
+              <li key={s.name}>
+                <a href={s.href} target="_blank" rel="noreferrer" aria-label={s.name} className="flex h-10 w-10 items-center justify-center rounded-md bg-white/10 transition-colors hover:bg-blue">
+                  <Icon name={s.icon} />
+                </a>
+              </li>
+            ))}
+          </ul>
         </div>
-        <ul className="flex gap-3">
-          {social.map((s) => (
-            <li key={s.name}>
-              <a
-                href={s.href}
-                target="_blank"
-                rel="noreferrer"
-                aria-label={s.name}
-                className="flex h-12 w-12 items-center justify-center rounded-full bg-white/10 transition-colors hover:bg-white hover:text-black md:h-14 md:w-14"
-              >
-                <Icon name={s.icon} />
-              </a>
-            </li>
-          ))}
-        </ul>
       </div>
     </footer>
   );

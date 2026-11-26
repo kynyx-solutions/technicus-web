@@ -34,10 +34,10 @@ export default function LeadershipPage() {
           </>
         ) : (
           <ul className="grid gap-x-6 gap-y-14 md:grid-cols-2 lg:grid-cols-3">
-            {team.map((p, i) => (
+            {team.map((p) => (
               <li key={p.slug} data-reveal>
                 <div
-                  className={`mb-6 aspect-[4/5] rounded-[22px] bg-cover bg-center ${i % 2 ? "bg-lavender" : "bg-mint"}`}
+                  className={`mb-6 aspect-[4/5] rounded-xl bg-sky bg-cover bg-center`}
                   style={p.photo ? { backgroundImage: `url(${p.photo})` } : undefined}
                 />
                 <h2 className="text-2xl font-medium">{p.name}</h2>

@@ -54,24 +54,24 @@ export default async function CapabilityPage({ params }: Props) {
 
       <Section title={seo?.heading ?? "What we build"} lead={seo?.intro}>
         <ul className="space-y-3">
-          {capability.services.map((service, i) => {
+          {capability.services.map((service) => {
             const detail = copy?.services[service];
             return (
               <li
                 key={service}
                 id={anchor(service)}
                 data-reveal
-                className={`scroll-mt-28 grid gap-6 rounded-[22px] p-7 md:grid-cols-12 md:gap-10 md:p-12 ${i % 2 ? "bg-lavender" : "bg-mint"}`}
+                className="scroll-mt-28 grid gap-6 rounded-xl border border-line bg-white p-7 md:grid-cols-12 md:gap-10 md:p-10"
               >
                 <div className="md:col-span-5">
-                  <h3 className="text-[1.6rem] leading-tight font-medium tracking-[-0.01em] md:text-[1.9rem]">{service}</h3>
+                  <h3 className="h3 text-ink">{service}</h3>
                 </div>
                 <div className="md:col-span-7">
-                  {detail && <p className="text-[1.05rem] leading-relaxed text-black/70 md:text-lg">{detail.text}</p>}
+                  {detail && <p className="leading-relaxed text-muted">{detail.text}</p>}
                   {detail && (
                     <ul className="mt-6 flex flex-wrap gap-2">
                       {detail.deliverables.map((d) => (
-                        <li key={d} className="rounded-full bg-white/70 px-4 py-2 text-[0.95rem]">
+                        <li key={d} className="rounded-md bg-sky px-3 py-1.5 text-[0.88rem] text-navy">
                           {d}
                         </li>
                       ))}

@@ -1,68 +1,44 @@
 "use client";
 
+import { ChevronDown, Mail, Menu as MenuIcon, Phone, X } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { pillars } from "@/content/services";
 import { aboutPages, industries, site } from "@/content/site";
 
 type Menu = "services" | "industries" | "about" | null;
 
 const directLinks = [
-  { href: "/work", name: "Work" },
+  { href: "/work", name: "Case studies" },
   { href: "/insights", name: "Insights" },
+  { href: "/careers", name: "Careers" },
 ];
 
-function Chevron({ open }: { open: boolean }) {
+/** The wordmark: a blue square with a "t", and the name. */
+export function Logo({ light }: { light?: boolean }) {
   return (
-    <svg aria-hidden viewBox="0 0 12 12" className={`ml-1.5 inline h-2.5 w-2.5 transition-transform ${open ? "rotate-180" : ""}`} fill="none" stroke="currentColor" strokeWidth="1.4">
-      <path d="m2.5 4.5 3.5 3.5 3.5-3.5" />
-    </svg>
+    <span className="inline-flex items-center gap-2.5">
+      <span aria-hidden className="flex h-8 w-8 items-center justify-center rounded-md bg-blue font-heading text-[1.05rem] font-extrabold text-white">
+        t
+      </span>
+      <span className={`font-heading text-[1.35rem] font-bold tracking-[-0.02em] ${light ? "text-white" : "text-navy"}`}>{site.name.toLowerCase()}</span>
+    </span>
   );
 }
 
 export function Header({ contact }: { contact: { email: string; phone: string; phoneHref: string } }) {
   const pathname = usePathname();
-  const header = useRef<HTMLElement>(null);
   const [menu, setMenu] = useState<Menu>(null);
-  const [pillarSlug, setPillarSlug] = useState(pillars[0].slug);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const [hidden, setHidden] = useState(false);
-  const [dark, setDark] = useState(false);
 
-  // Hide on the way down, return on the way up, and take the colour of the
-  // section underneath: white text over black sections, black over white.
   useEffect(() => {
-    let last = window.scrollY;
-    let frame = 0;
-    const measure = () => {
-      frame = 0;
-      const y = window.scrollY;
-      setScrolled(y > 24);
-      setHidden(y > 400 && y > last);
-      last = y;
-      const self = header.current;
-      const under = document
-        .elementsFromPoint(window.innerWidth / 2, 40)
-        .find((el) => !self?.contains(el))
-        ?.closest("[data-tone]");
-      setDark(under?.getAttribute("data-tone") === "dark");
-    };
-    const onScroll = () => {
-      if (!frame) frame = requestAnimationFrame(measure);
-    };
-    // A new page has a new section under the header; measure once it has painted.
-    const first = window.setTimeout(measure, 60);
+    const onScroll = () => setScrolled(window.scrollY > 8);
+    onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onScroll);
-    return () => {
-      window.clearTimeout(first);
-      if (frame) cancelAnimationFrame(frame);
-      window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", onScroll);
-    };
-  }, [pathname]);
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -82,11 +58,9 @@ export function Header({ contact }: { contact: { email: string; phone: string; p
     };
   }, [mobileOpen]);
 
-  const pillar = pillars.find((p) => p.slug === pillarSlug) ?? pillars[0];
-  const open = menu !== null;
-  // White text over dark sections, unless a light drop-down panel is open.
-  const onDark = (dark && !open) || mobileOpen;
   const isActive = (href: string) => pathname === href || pathname.startsWith(`${href}/`);
+  const navLink = (active: boolean) =>
+    `relative inline-flex h-[72px] items-center text-[0.95rem] font-medium transition-colors hover:text-blue ${active ? "text-blue after:absolute after:inset-x-0 after:bottom-0 after:h-0.5 after:bg-blue" : "text-ink"}`;
 
   const trigger = (id: Exclude<Menu, null>, label: string, base: string) => (
     <button
@@ -96,24 +70,18 @@ export function Header({ contact }: { contact: { email: string; phone: string; p
       onMouseEnter={() => setMenu(id)}
       onFocus={() => setMenu(id)}
       onClick={() => setMenu(menu === id ? null : id)}
-      className={`inline-flex items-center py-2 transition-opacity hover:opacity-60 ${isActive(base) ? "underline underline-offset-[10px]" : ""}`}
+      className={`${navLink(isActive(base))} gap-1`}
     >
       {label}
-      <Chevron open={menu === id} />
+      <ChevronDown size={15} className={`transition-transform ${menu === id ? "rotate-180" : ""}`} aria-hidden />
     </button>
   );
 
-  const panel = "absolute inset-x-0 top-full hidden lg:block";
-  const card = "shell rounded-b-[28px] bg-white text-black shadow-[0_30px_60px_-30px_rgba(0,0,0,0.25)]";
+  const panel = "absolute inset-x-0 top-full hidden border-t border-line bg-white shadow-[0_24px_48px_-24px_rgba(15,23,42,0.25)] lg:block";
 
   return (
     <header
-      ref={header}
-      className={`fixed inset-x-0 top-0 z-50 transition-[transform,background-color,color] duration-500 ease-[var(--ease-out-expo)] ${
-        onDark ? "text-white" : "text-black"
-      } ${scrolled && !open && !mobileOpen ? (onDark ? "bg-black/80 backdrop-blur-md" : "bg-white/85 backdrop-blur-md") : ""} ${
-        open ? "bg-white" : ""
-      } ${hidden && !open && !mobileOpen ? "-translate-y-full" : ""}`}
+      className={`sticky top-0 z-50 bg-white transition-shadow ${scrolled || menu ? "shadow-[0_1px_0_#e2e8f0,0_8px_24px_-16px_rgba(15,23,42,0.18)]" : "shadow-[0_1px_0_#e2e8f0]"}`}
       onMouseLeave={() => setMenu(null)}
       // Close every menu when a link inside the header is followed.
       onClick={(e) => {
@@ -123,126 +91,115 @@ export function Header({ contact }: { contact: { email: string; phone: string; p
         }
       }}
     >
-      <a
-        href="#content"
-        className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:rounded focus:bg-black focus:px-3 focus:py-2 focus:text-white"
-      >
+      <a href="#content" className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:rounded focus:bg-blue focus:px-3 focus:py-2 focus:text-white">
         Skip to content
       </a>
 
-      <div className="shell flex h-[84px] items-center justify-between md:h-24">
-        <Link href="/" className="text-[1.65rem] font-semibold tracking-[-0.03em]" aria-label={`${site.name} home`}>
-          {site.name.toLowerCase()}
+      {/* Utility bar */}
+      <div className="hidden bg-navy text-white/80 md:block">
+        <div className="shell flex h-9 items-center justify-between text-[0.8rem]">
+          <p>Technology consultancy · Strategy, engineering, AI, cloud and growth</p>
+          <div className="flex items-center gap-6">
+            <a href={`mailto:${contact.email}`} className="inline-flex items-center gap-1.5 hover:text-white">
+              <Mail size={13} aria-hidden /> {contact.email}
+            </a>
+            <a href={contact.phoneHref} className="inline-flex items-center gap-1.5 hover:text-white">
+              <Phone size={13} aria-hidden /> {contact.phone}
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div className="shell flex h-[72px] items-center justify-between gap-6">
+        <Link href="/" aria-label={`${site.name} home`} onMouseEnter={() => setMenu(null)}>
+          <Logo />
         </Link>
 
-        <div className="flex items-center gap-9">
-          <nav aria-label="Main" className="hidden items-center gap-9 text-[1.05rem] lg:flex">
-            {trigger("services", "Services", "/services")}
-            {trigger("industries", "Industries", "/industries")}
-            {directLinks.map((l) => (
-              <Link
-                key={l.href}
-                href={l.href}
-                aria-current={isActive(l.href) ? "page" : undefined}
-                className="py-2 transition-opacity hover:opacity-60 aria-[current=page]:underline aria-[current=page]:underline-offset-[10px]"
-                onMouseEnter={() => setMenu(null)}
-              >
-                {l.name}
-              </Link>
-            ))}
-            {trigger("about", "About", "/about")}
-            <Link
-              href="/careers"
-              aria-current={isActive("/careers") ? "page" : undefined}
-              className="py-2 transition-opacity hover:opacity-60 aria-[current=page]:underline aria-[current=page]:underline-offset-[10px]"
-              onMouseEnter={() => setMenu(null)}
-            >
-              Careers
+        <nav aria-label="Main" className="hidden items-center gap-7 lg:flex">
+          {trigger("services", "Services", "/services")}
+          {trigger("industries", "Industries", "/industries")}
+          {directLinks.map((l) => (
+            <Link key={l.href} href={l.href} aria-current={isActive(l.href) ? "page" : undefined} className={navLink(isActive(l.href))} onMouseEnter={() => setMenu(null)}>
+              {l.name}
             </Link>
-          </nav>
-          <div className="flex items-center gap-2">
-            <Link
-              href="/contact"
-              className={`btn px-6 py-4 ${pathname === "/contact" ? (onDark ? "border border-white" : "border border-black") : onDark ? "bg-white text-black hover:bg-smoke" : "bg-black text-white hover:bg-coal"}`}
-              onMouseEnter={() => setMenu(null)}
-            >
-              Talk to us
-            </Link>
-            <button
-              type="button"
-              className={`btn border px-5 py-4 lg:hidden ${onDark ? "border-white/50" : "border-black/30"}`}
-              aria-expanded={mobileOpen}
-              aria-controls="mobile-menu"
-              onClick={() => setMobileOpen(!mobileOpen)}
-            >
-              {mobileOpen ? "Close" : "Menu"}
-            </button>
-          </div>
+          ))}
+          {trigger("about", "About", "/about")}
+        </nav>
+
+        <div className="flex items-center gap-2">
+          <Link href="/contact" className="btn-dark hidden !px-5 !py-3 sm:inline-flex" onMouseEnter={() => setMenu(null)}>
+            Contact us
+          </Link>
+          <button
+            type="button"
+            className="inline-flex h-11 w-11 items-center justify-center rounded-md border border-line text-navy lg:hidden"
+            aria-label={mobileOpen ? "Close menu" : "Open menu"}
+            aria-expanded={mobileOpen}
+            aria-controls="mobile-menu"
+            onClick={() => setMobileOpen(!mobileOpen)}
+          >
+            {mobileOpen ? <X size={20} /> : <MenuIcon size={20} />}
+          </button>
         </div>
       </div>
 
       {/* Laptop: drop-down panels */}
       {menu === "services" && (
         <div id="menu-services" className={panel}>
-          <div className={`${card} grid grid-cols-12 gap-10 px-12 pt-6 pb-12 xl:px-12`}>
-            <ul className="col-span-5">
+          <div className="shell grid grid-cols-12 gap-8 py-8">
+            <div className="col-span-9 grid grid-cols-3 gap-x-8 gap-y-7">
               {pillars.map((p) => (
-                <li key={p.slug}>
-                  <Link
-                    href={`/services/${p.slug}`}
-                    onMouseEnter={() => setPillarSlug(p.slug)}
-                    onFocus={() => setPillarSlug(p.slug)}
-                    className={`block py-1.5 text-[1.7rem] tracking-[-0.015em] transition-colors ${p.slug === pillar.slug ? "text-black" : "text-black/30"}`}
-                  >
+                <div key={p.slug}>
+                  <Link href={`/services/${p.slug}`} className="font-heading text-[0.98rem] font-semibold text-navy hover:text-blue">
                     {p.name}
                   </Link>
-                </li>
+                  <ul className="mt-2.5 space-y-1.5 text-[0.88rem] text-muted">
+                    {p.capabilities.map((c) => (
+                      <li key={c.slug}>
+                        <Link href={`/services/${p.slug}/${c.slug}`} className="hover:text-blue">
+                          {c.name}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               ))}
-            </ul>
-            <div className="col-span-4 pt-2">
-              <p className="mb-5 text-[0.95rem] text-black/55">{pillar.summary}</p>
-              <ul className="space-y-2.5 text-[1.1rem]">
-                {pillar.capabilities.map((c) => (
-                  <li key={c.slug}>
-                    <Link href={`/services/${pillar.slug}/${c.slug}`} className="sweep">
-                      {c.name}
+            </div>
+            <div className="col-span-3 rounded-xl bg-mist p-6">
+              <p className="font-heading font-semibold text-navy">Not sure where to start?</p>
+              <p className="mt-2 text-[0.9rem] text-muted">Tell us the problem and we will recommend the right mix of services.</p>
+              <ul className="mt-5 space-y-2 text-[0.9rem] font-medium">
+                {[
+                  { href: "/services", name: "All services" },
+                  { href: "/technologies", name: "Technologies" },
+                  { href: "/about/how-we-work", name: "How we work" },
+                ].map((l) => (
+                  <li key={l.href}>
+                    <Link href={l.href} className="text-blue hover:underline">
+                      {l.name} →
                     </Link>
                   </li>
                 ))}
               </ul>
             </div>
-            <ul className="col-span-3 space-y-3 border-l border-black/10 pt-2 pl-10 text-[1rem]">
-              {[
-                { href: "/services", name: "All services" },
-                { href: "/technologies", name: "Technologies" },
-                { href: "/about/how-we-work", name: "How we work" },
-                { href: "/work", name: "Case studies" },
-              ].map((l) => (
-                <li key={l.href}>
-                  <Link href={l.href} className="sweep">
-                    {l.name}
-                  </Link>
-                </li>
-              ))}
-            </ul>
           </div>
         </div>
       )}
 
       {menu === "industries" && (
         <div id="menu-industries" className={panel}>
-          <div className={`${card} px-12 pt-6 pb-12 xl:px-12`}>
-            <ul className="grid max-w-4xl grid-cols-2 gap-x-12 gap-y-2 text-[1.5rem] tracking-[-0.015em]">
+          <div className="shell py-8">
+            <ul className="grid grid-cols-4 gap-x-8 gap-y-3 text-[0.95rem] font-medium">
               {industries.map((i) => (
                 <li key={i.slug}>
-                  <Link href={`/industries/${i.slug}`} className="sweep">
+                  <Link href={`/industries/${i.slug}`} className="text-ink hover:text-blue">
                     {i.name}
                   </Link>
                 </li>
               ))}
             </ul>
-            <Link href="/industries" className="sweep mt-8 inline-block text-[1rem]">
-              All industries
+            <Link href="/industries" className="mt-6 inline-block text-[0.9rem] font-semibold text-blue hover:underline">
+              All industries →
             </Link>
           </div>
         </div>
@@ -250,10 +207,10 @@ export function Header({ contact }: { contact: { email: string; phone: string; p
 
       {menu === "about" && (
         <div id="menu-about" className={panel}>
-          <ul className={`${card} flex flex-wrap gap-x-12 gap-y-2 px-12 pt-6 pb-12 text-[1.5rem] tracking-[-0.015em] xl:px-12`}>
+          <ul className="shell flex flex-wrap gap-x-10 gap-y-3 py-7 text-[0.95rem] font-medium">
             {aboutPages.map((p) => (
               <li key={p.href}>
-                <Link href={p.href} className="sweep">
+                <Link href={p.href} className="text-ink hover:text-blue">
                   {p.name}
                 </Link>
               </li>
@@ -264,17 +221,19 @@ export function Header({ contact }: { contact: { email: string; phone: string; p
 
       {/* Phone and tablet: full-screen menu */}
       {mobileOpen && (
-        <div id="mobile-menu" className="fixed inset-x-0 top-[84px] bottom-0 overflow-y-auto bg-black px-5 pt-4 pb-10 text-white md:top-24 md:px-8 lg:hidden">
-          <nav aria-label="Main" className="text-[2.4rem] leading-tight font-medium tracking-[-0.02em]">
-            <details className="border-b border-white/15">
-              <summary className="cursor-pointer list-none py-4">Services</summary>
-              <div className="space-y-6 pb-6 text-base font-normal tracking-normal">
+        <div id="mobile-menu" className="fixed inset-x-0 top-[72px] bottom-0 overflow-y-auto border-t border-line bg-white px-5 pt-2 pb-10 md:top-[108px] md:px-8 lg:hidden">
+          <nav aria-label="Main" className="font-heading text-[1.15rem] font-semibold text-navy">
+            <details className="border-b border-line">
+              <summary className="flex cursor-pointer list-none items-center justify-between py-4">
+                Services <ChevronDown size={18} aria-hidden />
+              </summary>
+              <div className="space-y-5 pb-5 font-sans text-[0.95rem] font-normal">
                 {pillars.map((p) => (
                   <div key={p.slug}>
-                    <Link href={`/services/${p.slug}`} className="text-lg">
+                    <Link href={`/services/${p.slug}`} className="font-semibold text-navy">
                       {p.name}
                     </Link>
-                    <ul className="mt-2 space-y-1.5 text-white/60">
+                    <ul className="mt-1.5 space-y-1 text-muted">
                       {p.capabilities.map((c) => (
                         <li key={c.slug}>
                           <Link href={`/services/${p.slug}/${c.slug}`}>{c.name}</Link>
@@ -283,17 +242,16 @@ export function Header({ contact }: { contact: { email: string; phone: string; p
                     </ul>
                   </div>
                 ))}
-                <Link href="/services" className="block underline underline-offset-4">
-                  All services
-                </Link>
-                <Link href="/technologies" className="block underline underline-offset-4">
-                  Technologies
+                <Link href="/services" className="block font-semibold text-blue">
+                  All services →
                 </Link>
               </div>
             </details>
-            <details className="border-b border-white/15">
-              <summary className="cursor-pointer list-none py-4">Industries</summary>
-              <ul className="space-y-2 pb-6 text-base font-normal tracking-normal text-white/60">
+            <details className="border-b border-line">
+              <summary className="flex cursor-pointer list-none items-center justify-between py-4">
+                Industries <ChevronDown size={18} aria-hidden />
+              </summary>
+              <ul className="space-y-1.5 pb-5 font-sans text-[0.95rem] font-normal text-muted">
                 {industries.map((i) => (
                   <li key={i.slug}>
                     <Link href={`/industries/${i.slug}`}>{i.name}</Link>
@@ -302,13 +260,15 @@ export function Header({ contact }: { contact: { email: string; phone: string; p
               </ul>
             </details>
             {directLinks.map((l) => (
-              <Link key={l.href} href={l.href} className="block border-b border-white/15 py-4">
+              <Link key={l.href} href={l.href} className="block border-b border-line py-4">
                 {l.name}
               </Link>
             ))}
-            <details className="border-b border-white/15">
-              <summary className="cursor-pointer list-none py-4">About</summary>
-              <ul className="space-y-2 pb-6 text-base font-normal tracking-normal text-white/60">
+            <details className="border-b border-line">
+              <summary className="flex cursor-pointer list-none items-center justify-between py-4">
+                About <ChevronDown size={18} aria-hidden />
+              </summary>
+              <ul className="space-y-1.5 pb-5 font-sans text-[0.95rem] font-normal text-muted">
                 {aboutPages.map((p) => (
                   <li key={p.href}>
                     <Link href={p.href}>{p.name}</Link>
@@ -316,15 +276,15 @@ export function Header({ contact }: { contact: { email: string; phone: string; p
                 ))}
               </ul>
             </details>
-            <Link href="/careers" className="block border-b border-white/15 py-4">
-              Careers
-            </Link>
           </nav>
-          <div className="mt-10 flex flex-wrap gap-3">
-            <a href={`mailto:${contact.email}`} className="btn-outline-light">
+          <div className="mt-8 space-y-3">
+            <Link href="/contact" className="btn-dark w-full">
+              Contact us
+            </Link>
+            <a href={`mailto:${contact.email}`} className="btn-outline w-full">
               {contact.email}
             </a>
-            <a href={contact.phoneHref} className="btn-outline-light">
+            <a href={contact.phoneHref} className="btn-outline w-full">
               {contact.phone}
             </a>
           </div>
