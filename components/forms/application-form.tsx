@@ -75,12 +75,12 @@ export function ApplicationForm({ roles, role }: Props) {
         <input type="hidden" name="role" value={role} />
       ) : (
         <fieldset className="md:col-span-2">
-          <legend className="mb-3 font-heading text-[1.05rem] font-semibold text-white">I&apos;m applying for…</legend>
+          <legend className="mb-3 text-[0.95rem] font-medium text-white">I&apos;m applying for…</legend>
           <div className="flex flex-wrap gap-2.5 md:gap-3">
             {options.map((option) => (
               <label key={option}>
                 <input type="radio" name="role" value={option} defaultChecked={(value("role") || OPEN) === option} className="peer sr-only" />
-                <span className="inline-flex cursor-pointer items-center rounded-md border border-white/30 px-4 py-2.5 text-[0.95rem] leading-none font-medium transition-colors peer-checked:border-white peer-checked:bg-white peer-checked:text-navy peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-indigo hover:border-white">
+                <span className="inline-flex cursor-pointer items-center border border-white/30 px-4 py-2.5 text-[0.95rem] leading-none font-medium transition-colors peer-checked:border-white peer-checked:bg-white peer-checked:text-navy peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-indigo hover:border-white">
                   {option}
                 </span>
               </label>
@@ -105,7 +105,7 @@ export function ApplicationForm({ roles, role }: Props) {
           required
           accept=".pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
           aria-invalid={state.errors?.cv ? true : undefined}
-          className="mt-3 block w-full text-lg text-white/80 file:mr-5 file:cursor-pointer file:rounded-full file:border-0 file:bg-white file:px-6 file:py-3 file:text-base file:font-medium file:text-black hover:file:bg-smoke"
+          className="mt-3 block w-full text-lg text-white/80 file:mr-5 file:cursor-pointer file:border-0 file:bg-white file:px-6 file:py-3 file:text-base file:font-medium file:text-black hover:file:bg-smoke"
         />
         {state.errors?.cv && <p className="mt-3 text-[0.95rem] text-[#ff6b9a]">{state.errors.cv}</p>}
       </div>

@@ -1,13 +1,15 @@
 import type { Metadata } from "next";
-import { Inter, Plus_Jakarta_Sans } from "next/font/google";
+import { Geist, Geist_Mono, Newsreader } from "next/font/google";
 import { site } from "@/content/site";
 import { getSeoSettings } from "@/lib/cms";
 import "./globals.css";
 
-// Plus Jakarta Sans for headings, Inter for text. Self-hosted by Next.js.
+// Newsreader (serif) for headlines, Geist for text, Geist Mono for code.
+// Self-hosted by Next.js.
 // The brand phase may replace them.
-const inter = Inter({ variable: "--font-inter", subsets: ["latin"], display: "swap" });
-const jakarta = Plus_Jakarta_Sans({ variable: "--font-jakarta", subsets: ["latin"], display: "swap", weight: ["500", "600", "700", "800"] });
+const geist = Geist({ variable: "--font-geist", subsets: ["latin"], display: "swap" });
+const newsreader = Newsreader({ variable: "--font-newsreader", subsets: ["latin"], display: "swap", style: ["normal", "italic"], axes: ["opsz"] });
+const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"], display: "swap", weight: ["400", "500"] });
 
 export async function generateMetadata(): Promise<Metadata> {
   const seo = await getSeoSettings();
@@ -33,7 +35,7 @@ const motionFlag = `(function(){try{if(matchMedia('(prefers-reduced-motion: redu
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" className={`${inter.variable} ${jakarta.variable} h-full`} suppressHydrationWarning>
+    <html lang="en" className={`${geist.variable} ${geistMono.variable} ${newsreader.variable} h-full`} suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: motionFlag }} />
       </head>

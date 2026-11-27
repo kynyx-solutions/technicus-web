@@ -48,8 +48,8 @@ export const clientNames: string[] = [];
 export const quotes: { text: string; name: string; role: string; company: string }[] = [];
 
 export const positioning = {
-  statement: "Technology consultancy for organisations that build on software",
-  lead: "We help companies decide what to build, design it well, engineer it properly and keep it running. Strategy, design, engineering, AI, cloud and growth, from one team.",
+  statement: "We design, build and run the software your business depends on",
+  lead: "Technicus is a technology consultancy. One team takes you from the first decision to a system in production, and stays to keep it running well.",
 };
 
 export const method = [

@@ -85,8 +85,8 @@ export function Art({
   const id = useId().replace(/:/g, "");
   const dark = tone === "dark";
   const c = dark
-    ? { dot: "rgba(255,255,255,0.12)", panel: "#12305a", stroke: "rgba(255,255,255,0.16)", ink: "rgba(255,255,255,0.28)", accent: "#4f8cff", soft: "rgba(79,140,255,0.35)", link: "rgba(79,140,255,0.6)" }
-    : { dot: "rgba(26,86,219,0.14)", panel: "#ffffff", stroke: "rgba(26,86,219,0.22)", ink: "rgba(15,23,42,0.14)", accent: "#1a56db", soft: "rgba(26,86,219,0.18)", link: "rgba(26,86,219,0.45)" };
+    ? { dot: "rgba(245,243,238,0.1)", panel: "#26241f", stroke: "rgba(245,243,238,0.28)", ink: "rgba(245,243,238,0.2)", accent: "#e8553a", soft: "rgba(245,243,238,0.08)", link: "rgba(245,243,238,0.3)" }
+      : { dot: "rgba(21,20,15,0.1)", panel: "#ffffff", stroke: "rgba(21,20,15,0.32)", ink: "rgba(21,20,15,0.15)", accent: "#d63a1e", soft: "rgba(21,20,15,0.06)", link: "rgba(21,20,15,0.32)" };
   const { panels, links } = LAYOUTS[kind];
   const centre = (p: Panel) => [p.x + p.w / 2, p.y + p.h / 2];
 
@@ -97,7 +97,7 @@ export function Art({
           <circle cx="1.5" cy="1.5" r="1.1" fill={c.dot} />
         </pattern>
         <filter id={`${id}-shadow`} x="-20%" y="-20%" width="140%" height="140%">
-          <feDropShadow dx="0" dy="6" stdDeviation="8" floodColor={dark ? "#000" : "#1a56db"} floodOpacity={dark ? 0.35 : 0.1} />
+          <feDropShadow dx="0" dy="6" stdDeviation="8" floodColor={dark ? "#000" : "#4f46e5"} floodOpacity={0} />
         </filter>
       </defs>
       <rect width="400" height="300" fill={`url(#${id}-dots)`} />
@@ -117,8 +117,8 @@ export function Art({
 
       {panels.map((p, i) => (
         <g key={i} filter={`url(#${id}-shadow)`}>
-          <rect x={p.x} y={p.y} width={p.w} height={p.h} rx="8" fill={c.panel} stroke={c.stroke} />
-          <rect x={p.x} y={p.y} width={p.w} height="14" rx="8" fill={c.soft} />
+          <rect x={p.x} y={p.y} width={p.w} height={p.h} rx="1" fill={c.panel} stroke={c.stroke} />
+          <rect x={p.x} y={p.y} width={p.w} height="14" rx="1" fill={c.soft} />
           <circle cx={p.x + 10} cy={p.y + 7} r="2" fill={c.accent} />
           <circle cx={p.x + 18} cy={p.y + 7} r="2" fill={c.ink} />
           <PanelBody p={p} c={c} />

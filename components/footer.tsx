@@ -27,7 +27,7 @@ function Icon({ name }: { name: "linkedin" | "x" | "facebook" | "whatsapp" | "in
       "M12 3a9 9 0 0 0-7.74 13.6L3 21l4.53-1.2A9 9 0 1 0 12 3Zm0 16.4c-1.4 0-2.77-.38-3.97-1.09l-.28-.17-2.69.71.72-2.62-.19-.29A7.4 7.4 0 1 1 12 19.4Zm4.06-5.54c-.22-.11-1.31-.65-1.51-.72-.2-.07-.35-.11-.5.11-.15.22-.57.72-.7.87-.13.15-.26.17-.48.06-.22-.11-.94-.35-1.79-1.1-.66-.59-1.11-1.32-1.24-1.54-.13-.22-.01-.34.1-.45.1-.1.22-.26.33-.39.11-.13.15-.22.22-.37.07-.15.04-.28-.02-.39-.06-.11-.5-1.2-.68-1.64-.18-.43-.36-.37-.5-.38h-.43c-.15 0-.39.06-.59.28-.2.22-.78.76-.78 1.85 0 1.09.8 2.15.91 2.3.11.15 1.57 2.4 3.8 3.36.53.23.95.37 1.27.47.53.17 1.02.15 1.4.09.43-.06 1.31-.54 1.5-1.06.18-.52.18-.97.13-1.06-.06-.09-.2-.15-.42-.26Z",
   };
   return (
-    <svg aria-hidden viewBox="0 0 24 24" className="h-5 w-5" fill="currentColor">
+    <svg aria-hidden viewBox="0 0 24 24" className="h-4 w-4" fill="currentColor">
       <path d={paths[name]} />
     </svg>
   );
@@ -36,11 +36,11 @@ function Icon({ name }: { name: "linkedin" | "x" | "facebook" | "whatsapp" | "in
 function Column({ title, links }: { title: string; links: { href: string; name: string }[] }) {
   return (
     <div>
-      <h2 className="mb-4 font-heading text-[0.95rem] font-semibold text-white">{title}</h2>
-      <ul className="space-y-2.5 text-[0.9rem] text-white/65">
+      <h2 className="label-plain mb-5 text-paper/45">{title}</h2>
+      <ul className="space-y-2.5 text-[0.92rem] text-paper/75">
         {links.map((l) => (
           <li key={l.href}>
-            <Link href={l.href} className="hover:text-white">
+            <Link href={l.href} className="sweep transition-colors hover:text-paper">
               {l.name}
             </Link>
           </li>
@@ -50,6 +50,7 @@ function Column({ title, links }: { title: string; links: { href: string; name: 
   );
 }
 
+/** Ink footer: a large serif sign-off with the address to write to, then the index of the site on hairlines. */
 export async function Footer() {
   const [contact, articles] = await Promise.all([getContactInfo(), getArticles()]);
   const offices = contact.offices;
@@ -62,48 +63,48 @@ export async function Footer() {
   ].filter((s) => s.href);
 
   return (
-    <footer data-tone="dark" className="bg-navy text-white">
-      <div className="shell grid gap-12 pt-16 pb-12 lg:grid-cols-12">
-        <div className="lg:col-span-4">
-          <Logo light />
-          <p className="mt-5 max-w-sm text-[0.92rem] leading-relaxed text-white/65">
-            {site.description}
-          </p>
-          <ul className="mt-6 space-y-2 text-[0.92rem]">
-            <li>
-              <a href={`mailto:${contact.email}`} className="text-white hover:text-[#8fb2ff]">
-                {contact.email}
-              </a>
-            </li>
-            <li>
-              <a href={contact.phoneHref} className="text-white hover:text-[#8fb2ff]">
-                {contact.phone}
-              </a>
-            </li>
-            {offices.map((o) => (
-              <li key={o.city} className="pt-2 text-white/60">
-                <span className="block text-[0.75rem] font-semibold tracking-[0.1em] text-white/45 uppercase">{o.hq ? "Head office" : "Office"}</span>
-                {o.lines.join(", ")}
-              </li>
-            ))}
-          </ul>
+    <footer data-tone="dark" className="bg-navy text-paper">
+      <div className="shell pt-20 md:pt-28">
+        <div className="grid gap-10 md:grid-cols-12">
+          <p className="label text-paper/80 md:col-span-3">Write to us</p>
+          <div className="md:col-span-9">
+            <a href={`mailto:${contact.email}`} className="group inline-block font-serif text-[clamp(2.2rem,6vw,5.2rem)] leading-none tracking-[-0.035em]">
+              <span className="sweep pb-2">{contact.email}</span>
+            </a>
+            <p className="mt-6 text-paper/60">
+              Or call <a href={contact.phoneHref} className="sweep text-paper">{contact.phone}</a>
+            </p>
+          </div>
         </div>
-        <div className="grid gap-10 sm:grid-cols-2 lg:col-span-8 lg:grid-cols-4">
-          <Column title="Services" links={[...pillars.map((p) => ({ href: `/services/${p.slug}`, name: p.name })), { href: "/technologies", name: "Technologies" }]} />
-          <Column title="Industries" links={industries.map((i) => ({ href: `/industries/${i.slug}`, name: i.name }))} />
-          <Column title="Company" links={mainLinks.filter((l) => !["/services", "/industries"].includes(l.href)).concat([{ href: "/about/trust", name: "Trust" }, { href: "/about/locations", name: "Locations" }, { href: "/india", name: "Technicus in India" }])} />
-          <Column title="Insights" links={[...articles.slice(0, 4).map((a) => ({ href: `/insights/${a.slug}`, name: a.title })), { href: "/insights", name: "All insights" }]} />
-        </div>
-      </div>
 
-      <div className="border-t border-white/10">
-        <div className="shell flex flex-col gap-5 py-6 md:flex-row md:items-center md:justify-between">
-          <div className="flex flex-wrap items-center gap-x-6 gap-y-2 text-[0.85rem] text-white/60">
+        <div className="mt-20 grid gap-12 border-t border-paper/15 pt-12 md:mt-28 lg:grid-cols-12">
+          <div className="lg:col-span-3">
+            <Logo light />
+            <p className="mt-5 max-w-xs text-[0.9rem] leading-relaxed text-paper/55">{site.description}</p>
+            <ul className="mt-6 space-y-3 text-[0.88rem] text-paper/55">
+              {offices.map((o) => (
+                <li key={o.city}>
+                  <span className="label-plain block text-paper/40">{o.hq ? "Head office" : "Office"}</span>
+                  <span className="mt-1 block">{o.lines.join(", ")}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div className="grid gap-10 sm:grid-cols-2 lg:col-span-9 lg:grid-cols-4">
+            <Column title="Services" links={[...pillars.map((p) => ({ href: `/services/${p.slug}`, name: p.name })), { href: "/technologies", name: "Technologies" }]} />
+            <Column title="Industries" links={industries.map((i) => ({ href: `/industries/${i.slug}`, name: i.name }))} />
+            <Column title="Company" links={mainLinks.filter((l) => !["/services", "/industries"].includes(l.href)).concat([{ href: "/about/trust", name: "Trust" }, { href: "/about/locations", name: "Locations" }, { href: "/india", name: "Technicus in India" }])} />
+            <Column title="Insights" links={[...articles.slice(0, 4).map((a) => ({ href: `/insights/${a.slug}`, name: a.title })), { href: "/insights", name: "All insights" }]} />
+          </div>
+        </div>
+
+        <div className="mt-16 flex flex-col gap-5 border-t border-paper/15 py-7 md:flex-row md:items-center md:justify-between">
+          <div className="flex flex-wrap items-center gap-x-6 gap-y-2 text-[0.82rem] text-paper/50">
             <span>
               © {new Date().getFullYear()} {site.legalName}
             </span>
             {legalPages.map((l) => (
-              <Link key={l.href} href={l.href} className="hover:text-white">
+              <Link key={l.href} href={l.href} className="sweep hover:text-paper">
                 {l.name}
               </Link>
             ))}
@@ -111,7 +112,7 @@ export async function Footer() {
           <ul className="flex gap-2">
             {social.map((s) => (
               <li key={s.name}>
-                <a href={s.href} target="_blank" rel="noreferrer" aria-label={s.name} className="flex h-10 w-10 items-center justify-center rounded-md bg-white/10 transition-colors hover:bg-blue">
+                <a href={s.href} target="_blank" rel="noreferrer" aria-label={s.name} className="flex h-10 w-10 items-center justify-center border border-paper/15 text-paper/70 transition-colors duration-300 hover:border-paper hover:bg-paper hover:text-ink">
                   <Icon name={s.icon} />
                 </a>
               </li>

@@ -18,7 +18,7 @@ export function ContactTabs({ services }: { services: string[] }) {
 
   return (
     <div>
-      <div role="tablist" aria-label="How would you like to start?" className="inline-flex flex-wrap gap-1 rounded-lg border border-line bg-mist p-1">
+      <div role="tablist" aria-label="How would you like to start?" className="inline-flex flex-wrap gap-1 border border-line bg-mist p-1">
         {tabs.map((tab) => (
           <button
             key={tab.id}
@@ -28,8 +28,8 @@ export function ContactTabs({ services }: { services: string[] }) {
             aria-selected={active === tab.id}
             aria-controls="contact-panel"
             onClick={() => setActive(tab.id)}
-            className={`rounded-md px-5 py-2.5 text-[0.95rem] font-semibold transition-colors ${
-              active === tab.id ? "bg-blue text-white shadow-sm" : "text-muted hover:text-navy"
+            className={` px-5 py-2.5 text-[0.95rem] font-semibold transition-colors ${
+              active === tab.id ? "bg-blue text-white " : "text-muted hover:text-navy"
             }`}
           >
             {tab.label}

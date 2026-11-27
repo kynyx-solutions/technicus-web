@@ -24,7 +24,7 @@ export default async function InsightsPage() {
       <Hero eyebrow="Technology insights" crumbs={[{ href: "/insights", name: "Insights" }]} title="Insights" lead="Practical writing for people who make technology decisions." />
 
       <Section>
-        <Link href={`/insights/${featured.slug}`} className="group grid items-center gap-8 overflow-hidden rounded-xl border border-line bg-white md:grid-cols-2 md:gap-0" data-reveal>
+        <Link href={`/insights/${featured.slug}`} className="group grid items-center gap-8 card-press overflow-hidden md:grid-cols-2 md:gap-0" data-reveal>
           <span className="relative block aspect-[4/3] overflow-hidden bg-sky md:aspect-auto md:h-full md:min-h-[360px]">
             {featured.coverImage ? (
               // eslint-disable-next-line @next/next/no-img-element

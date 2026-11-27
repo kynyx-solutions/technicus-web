@@ -32,7 +32,7 @@ export default function TechnologiesPage() {
               <h2 className="h3 md:col-span-4">{group.group}</h2>
               <ul className="flex flex-wrap gap-2.5 md:col-span-8">
                 {group.items.map((item) => (
-                  <li key={item} className="rounded-full border border-black/25 px-5 py-2.5 text-[1.05rem]">
+                  <li key={item} className="border border-ink/20 px-5 py-2.5 text-[1.05rem]">
                     {item}
                   </li>
                 ))}

@@ -37,7 +37,7 @@ export default function LeadershipPage() {
             {team.map((p) => (
               <li key={p.slug} data-reveal>
                 <div
-                  className={`mb-6 aspect-[4/5] rounded-xl bg-sky bg-cover bg-center`}
+                  className={`mb-6 aspect-[4/5]  bg-sky bg-cover bg-center`}
                   style={p.photo ? { backgroundImage: `url(${p.photo})` } : undefined}
                 />
                 <h2 className="text-2xl font-medium">{p.name}</h2>

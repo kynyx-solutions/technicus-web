@@ -100,7 +100,7 @@ export function LeadForm({ type, services = [], defaults, tone = "light" }: Prop
   const value = (field: string) => state.values?.[field] ?? defaults?.[field] ?? (field === "timeZone" ? zone : "");
   const chosen = (field: string) => value(field).split(", ").filter(Boolean);
 
-  const pill = `inline-flex cursor-pointer items-center rounded-md border px-4 py-2.5 text-[0.95rem] leading-none font-medium transition-colors ${
+  const pill = `inline-flex cursor-pointer items-center  border px-4 py-2.5 text-[0.95rem] leading-none font-medium transition-colors ${
     dark
       ? "border-white/30 peer-checked:border-white peer-checked:bg-white peer-checked:text-navy hover:border-white"
       : "border-line bg-white peer-checked:border-blue peer-checked:bg-blue peer-checked:text-white hover:border-blue"
@@ -134,7 +134,7 @@ export function LeadForm({ type, services = [], defaults, tone = "light" }: Prop
           const multiple = field.kind === "chips";
           return (
             <fieldset key={field.name} className="md:col-span-2" aria-describedby={error ? `${fieldId}-error` : undefined}>
-              <legend className={`mb-3 font-heading text-[1.05rem] font-semibold ${dark ? "text-white" : "text-ink"}`}>{field.label}</legend>
+              <legend className={`mb-3 text-[0.95rem] font-medium ${dark ? "text-white" : "text-ink"}`}>{field.label}</legend>
               <div className="flex flex-wrap gap-2.5 md:gap-3">
                 {options.map((option) => (
                   <label key={option}>

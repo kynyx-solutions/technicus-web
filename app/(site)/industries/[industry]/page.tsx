@@ -70,7 +70,7 @@ export default async function IndustryPage({ params }: Props) {
                   <ul className="mt-5 flex flex-wrap gap-2">
                     {s.links.map((href) => (
                       <li key={href}>
-                        <Link href={href} className="inline-flex rounded-full border border-black/25 px-4 py-2 text-[0.95rem] transition-colors hover:bg-black hover:text-white">
+                        <Link href={href} className="inline-flex border border-ink/20 px-4 py-2 text-[0.95rem] transition-colors hover:border-ink hover:bg-ink hover:text-paper">
                           {capabilityName(href)}
                         </Link>
                       </li>

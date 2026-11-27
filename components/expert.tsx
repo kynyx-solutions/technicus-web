@@ -8,7 +8,7 @@ import { expertFor } from "@/content/people";
 export function ExpertContact({ pillarSlug, pillarName }: { pillarSlug: string; pillarName: string }) {
   const person = expertFor(pillarSlug);
   return (
-    <div className="flex flex-col gap-8 rounded-xl border border-line bg-sky p-8 text-ink md:flex-row md:items-center md:justify-between md:p-10" data-reveal>
+    <div className="flex flex-col gap-8 border border-line bg-sky p-8 text-ink md:flex-row md:items-center md:justify-between md:p-10" data-reveal>
       <div>
         <p className="label mb-3 text-blue">{person ? person.role : pillarName}</p>
         <p className="h3">{person ? `Talk to ${person.name}` : `Talk to our ${pillarName.toLowerCase()} team`}</p>

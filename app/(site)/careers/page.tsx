@@ -44,12 +44,12 @@ export default async function CareersPage() {
           <ul className="space-y-3">
             {roles.map((role) => (
               <li key={role.slug} data-reveal>
-                <Link href={`/careers/${role.slug}`} className="group flex flex-wrap items-center justify-between gap-6 rounded-xl border border-line bg-white p-6 transition-colors hover:border-blue/40 md:p-7">
+                <Link href={`/careers/${role.slug}`} className="group flex flex-wrap items-center justify-between gap-6 card-press p-6 md:p-7">
                   <span>
                     <span className="block text-[1.6rem] leading-tight font-medium tracking-[-0.01em]">
                       {role.title}
                       {role.published === false && (
-                        <span className="ml-3 rounded-full border border-indigo px-2.5 py-0.5 align-middle font-mono text-xs font-normal text-indigo">
+                        <span className="ml-3 border border-blue/40 px-2 py-0.5 align-middle text-[0.7rem] font-medium tracking-[0.1em] text-blue uppercase">
                           Draft
                         </span>
                       )}

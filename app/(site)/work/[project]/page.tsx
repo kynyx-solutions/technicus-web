@@ -73,7 +73,7 @@ export default async function CaseStudyPage({ params }: Props) {
         ]}
         title={project.summary.replace(/\.$/, "")}
         media={
-          <div className="grid-pattern-dark relative flex aspect-[4/3] items-center justify-center overflow-hidden rounded-xl bg-navy p-6">
+          <div className="grid-pattern-dark relative flex aspect-[4/3] items-center justify-center overflow-hidden bg-navy p-6">
             <Art kind={KINDS[index % KINDS.length]} tone="dark" className="h-full w-full" />
           </div>
         }
@@ -93,7 +93,7 @@ export default async function CaseStudyPage({ params }: Props) {
             const pillar = getPillar(slug);
             return pillar ? (
               <li key={slug}>
-                <Link href={`/services/${slug}`} className="inline-flex rounded-full border border-black/25 px-4 py-2 text-[0.95rem] transition-colors hover:bg-black hover:text-white">
+                <Link href={`/services/${slug}`} className="inline-flex border border-ink/20 px-4 py-2 text-[0.95rem] transition-colors hover:border-ink hover:bg-ink hover:text-paper">
                   {pillar.name}
                 </Link>
               </li>
@@ -139,7 +139,7 @@ export default async function CaseStudyPage({ params }: Props) {
           <ul className="grid gap-10 md:grid-cols-3">
             {project.outcomes.map((o) => (
               <li key={o.label} data-reveal>
-                <p className="font-heading text-[2.8rem] leading-none font-bold text-[#8fb2ff]">{o.value}</p>
+                <p className="font-serif text-[3.2rem] leading-none tracking-[-0.04em] text-paper">{o.value}</p>
                 <p className="mt-3 text-white/70">{o.label}</p>
               </li>
             ))}
@@ -149,7 +149,7 @@ export default async function CaseStudyPage({ params }: Props) {
 
       {project.quote && (
         <Section>
-          <figure className="rounded-xl border border-line bg-sky p-8 md:p-12">
+          <figure className="border border-line bg-sky p-8 md:p-12">
             <blockquote className="h3" data-reveal>
               &ldquo;{project.quote.text}&rdquo;
             </blockquote>

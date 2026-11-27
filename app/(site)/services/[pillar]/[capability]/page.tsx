@@ -61,7 +61,7 @@ export default async function CapabilityPage({ params }: Props) {
                 key={service}
                 id={anchor(service)}
                 data-reveal
-                className="scroll-mt-28 grid gap-6 rounded-xl border border-line bg-white p-7 md:grid-cols-12 md:gap-10 md:p-10"
+                className="scroll-mt-28 grid gap-6 card p-7 md:grid-cols-12 md:gap-10 md:p-10"
               >
                 <div className="md:col-span-5">
                   <h3 className="h3 text-ink">{service}</h3>
@@ -71,7 +71,7 @@ export default async function CapabilityPage({ params }: Props) {
                   {detail && (
                     <ul className="mt-6 flex flex-wrap gap-2">
                       {detail.deliverables.map((d) => (
-                        <li key={d} className="rounded-md bg-sky px-3 py-1.5 text-[0.88rem] text-navy">
+                        <li key={d} className="bg-sky px-3 py-1.5 text-[0.88rem] text-navy">
                           {d}
                         </li>
                       ))}

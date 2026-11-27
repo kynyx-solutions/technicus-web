@@ -1,0 +1,771 @@
+/*
+  Plain (global) stylesheet: this repo's Tailwind loader rule turns *.css
+  modules into global CSS, so every class is prefixed kin- instead.
+
+  Bold kinetic type. Three colours only: ink, paper and a signal lime.
+  Scroll-linked values arrive as --p (0 to 1) on any element marked data-kx,
+  written by scroll-fx.tsx. Every rule falls back to a finished, static state
+  when --p is missing (no JavaScript, or reduced motion).
+*/
+
+/* In the components layer so Tailwind utilities on the same element win. */
+@layer components {
+.kin-root {
+  --k-ink: #0e0e0c;
+  --k-ink-2: #1c1c19;
+  --k-paper: #f0ede5;
+  --k-paper-2: #e4e0d5;
+  --k-sig: #c6f04a;
+  --k-muted: #6f6c63;
+  --k-ease: cubic-bezier(0.76, 0, 0.24, 1);
+  --k-out: cubic-bezier(0.16, 1, 0.3, 1);
+  font-family: var(--k-font-display), system-ui, sans-serif;
+  background: var(--k-paper);
+  color: var(--k-ink);
+  overflow-x: clip;
+  letter-spacing: -0.01em;
+}
+
+.kin-root ::selection {
+  background: var(--k-sig);
+  color: var(--k-ink);
+}
+
+.kin-root :focus-visible {
+  outline: 3px solid var(--k-sig);
+  outline-offset: 3px;
+}
+
+.kin-onPaper :focus-visible {
+  outline-color: var(--k-ink);
+}
+
+/* ---------- Type ---------- */
+
+.kin-display {
+  font-family: var(--k-font-display), system-ui, sans-serif;
+  font-weight: 800;
+  font-stretch: 76%;
+  letter-spacing: -0.035em;
+  line-height: 0.86;
+}
+
+.kin-mono {
+  font-family: var(--k-font-mono), ui-monospace, monospace;
+  font-size: 0.74rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.kin-outline {
+  color: transparent;
+  -webkit-text-stroke: max(1.5px, 0.02em) var(--k-stroke, var(--k-ink));
+}
+.kin-onInk {
+  --k-stroke: var(--k-paper);
+}
+
+/* Smaller display sizes need looser tracking than the giant ones. */
+.kin-displaySm {
+  letter-spacing: -0.018em;
+  font-stretch: 82%;
+  line-height: 0.95;
+}
+
+.kin-srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ---------- Header ---------- */
+
+.kin-header {
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: 50;
+  color: var(--k-paper);
+  transition:
+    transform 0.6s var(--k-out),
+    background-color 0.4s ease;
+}
+.kin-header[data-solid="true"] {
+  background: var(--k-ink);
+}
+.kin-header[data-hidden="true"] {
+  transform: translateY(-100%);
+}
+
+/* Link text rolls up to a copy of itself on hover. */
+.kin-roll {
+  position: relative;
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: top;
+}
+.kin-roll > span {
+  display: block;
+  transition: transform 0.5s var(--k-out);
+}
+.kin-roll > span + span {
+  position: absolute;
+  inset: 0;
+  transform: translateY(100%);
+}
+@media (hover: hover) {
+  a:hover > .kin-roll > span:first-child,
+  button:hover > .kin-roll > span:first-child {
+    transform: translateY(-100%);
+  }
+  a:hover > .kin-roll > span + span,
+  button:hover > .kin-roll > span + span {
+    transform: none;
+  }
+}
+
+/* ---------- Buttons ---------- */
+
+.kin-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  overflow: hidden;
+  isolation: isolate;
+  padding: 1rem 1.4rem;
+  font-weight: 600;
+  font-size: 0.98rem;
+  line-height: 1;
+  background: var(--k-sig);
+  color: var(--k-ink);
+}
+.kin-btn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--k-paper);
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.6s var(--k-out);
+}
+.kin-btnInk {
+  background: var(--k-ink);
+  color: var(--k-paper);
+}
+.kin-btnInk::before {
+  background: var(--k-ink-2);
+}
+.kin-btnGhost {
+  background: transparent;
+  color: inherit;
+  box-shadow: inset 0 0 0 1.5px currentColor;
+}
+.kin-btnGhost::before {
+  background: var(--k-paper);
+}
+.kin-btn svg {
+  transition: transform 0.6s var(--k-out);
+}
+@media (hover: hover) {
+  .kin-btn:hover::before {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+  .kin-btnGhost:hover {
+    color: var(--k-ink);
+  }
+  .kin-btn:hover svg {
+    transform: translateX(4px);
+  }
+}
+
+/* ---------- Load reveal (CSS only, ends visible) ---------- */
+
+.kin-mask {
+  display: block;
+  overflow: hidden;
+  padding-bottom: 0.14em;
+  margin-bottom: -0.14em;
+}
+.kin-maskInline {
+  display: inline-block;
+  overflow: hidden;
+  padding-bottom: 0.14em;
+  margin-bottom: -0.14em;
+  vertical-align: top;
+}
+.kin-rise {
+  display: inline-block;
+  animation: rise 1.15s var(--k-out) both;
+  animation-delay: calc(var(--d, 0) * 85ms + 120ms);
+}
+.kin-fadeUp {
+  animation: fade-up 1s var(--k-out) both;
+  animation-delay: calc(var(--d, 0) * 85ms + 120ms);
+}
+@keyframes rise {
+  from {
+    transform: translateY(105%) rotate(4deg);
+    transform-origin: left top;
+  }
+}
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+}
+
+/* Blocks rise into view when scripts run and motion is allowed. */
+.kin-root[data-motion="on"] .kin-rv {
+  transition:
+    opacity 0.9s ease,
+    transform 1.1s var(--k-out);
+  transition-delay: calc(var(--d, 0) * 70ms);
+}
+.kin-root[data-motion="on"] .kin-rv:not([data-in]) {
+  opacity: 0;
+  transform: translateY(48px);
+}
+
+/* ---------- Hero ---------- */
+
+.kin-heroTitle {
+  font-size: clamp(3.4rem, min(16.5vw, 21svh), 16rem);
+}
+
+.kin-heroLineA {
+  transform: translate3d(calc(var(--p, 0) * -16vw), 0, 0);
+}
+.kin-heroLineB {
+  transform: translate3d(calc(var(--p, 0) * 9vw), 0, 0);
+}
+.kin-heroLineC {
+  transform: translate3d(calc(var(--p, 0) * 22vw), 0, 0);
+}
+
+.kin-slot {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  padding-bottom: 0.14em;
+  margin-bottom: -0.14em;
+  color: var(--k-sig);
+}
+.kin-slotSpacer {
+  visibility: hidden;
+  white-space: nowrap;
+}
+.kin-slotWord {
+  position: absolute;
+  inset: 0;
+  white-space: nowrap;
+  transform: translate3d(0, 108%, 0);
+  transition: transform 0.9s var(--k-ease);
+}
+.kin-slotWord[data-state="current"] {
+  transform: none;
+}
+.kin-slotWord[data-state="prev"] {
+  transform: translate3d(0, -108%, 0);
+}
+.kin-slotWord[data-state="next"] {
+  transition: none;
+}
+
+.kin-timer {
+  height: 2px;
+  background: color-mix(in srgb, var(--k-paper) 18%, transparent);
+  overflow: hidden;
+}
+.kin-timer > span {
+  display: block;
+  height: 100%;
+  background: var(--k-sig);
+  transform-origin: left;
+  animation: timer var(--dur, 2.6s) linear both;
+}
+.kin-timer[data-paused="true"] > span {
+  animation-play-state: paused;
+}
+@keyframes timer {
+  from {
+    transform: scaleX(0);
+  }
+}
+
+.kin-cue {
+  position: relative;
+  width: 1.5px;
+  height: 3.5rem;
+  overflow: hidden;
+  background: color-mix(in srgb, var(--k-paper) 20%, transparent);
+}
+.kin-cue::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--k-sig);
+  animation: cue 2.2s var(--k-ease) infinite;
+}
+@keyframes cue {
+  0% {
+    transform: translateY(-100%);
+  }
+  60%,
+  100% {
+    transform: translateY(100%);
+  }
+}
+
+/* ---------- Statement that fills in as you read ---------- */
+
+.kin-statement {
+  font-size: clamp(1.9rem, 4.6vw, 4.6rem);
+  line-height: 1.02;
+  letter-spacing: -0.03em;
+  font-stretch: 88%;
+}
+.kin-fillWord {
+  opacity: clamp(0.14, calc(var(--p, 1) * (var(--n) + 6) - var(--i)), 1);
+}
+.kin-mark {
+  position: relative;
+  white-space: nowrap;
+}
+.kin-mark::before {
+  content: "";
+  position: absolute;
+  inset: 0.08em -0.08em 0.02em;
+  z-index: -1;
+  background: var(--k-sig);
+  transform-origin: left;
+  transform: scaleX(clamp(0, calc(var(--p, 1) * (var(--n) + 6) - var(--i)), 1));
+}
+
+/* ---------- Scroll-linked rows ---------- */
+
+.kin-rowsWrap {
+  overflow: hidden;
+}
+.kin-row {
+  display: flex;
+  width: max-content;
+  align-items: center;
+  gap: 0.28em;
+  white-space: nowrap;
+  font-size: clamp(3.4rem, 11vw, 12rem);
+  line-height: 1.02;
+  will-change: transform;
+  transform: translate3d(calc(var(--from, 0vw) + (var(--p, 0.5) - 0.5) * var(--dir, 1) * var(--amt, 50vw)), 0, 0);
+}
+.kin-glyph {
+  display: inline-block;
+  width: 0.42em;
+  height: 0.42em;
+  flex: none;
+  border-radius: 999px;
+  background: var(--k-sig);
+  transform: rotate(calc(var(--p, 0.5) * 360deg));
+}
+.kin-glyphSquare {
+  border-radius: 0;
+  background: var(--k-ink);
+}
+
+/* ---------- Full-bleed blocks that grow into place ---------- */
+
+.kin-wipe {
+  clip-path: inset(calc((1 - var(--p, 1)) * 9%) calc((1 - var(--p, 1)) * 6vw) round calc((1 - var(--p, 1)) * 48px));
+  will-change: clip-path;
+}
+
+.kin-split {
+  font-size: clamp(3.6rem, 14vw, 15rem);
+}
+.kin-splitL {
+  transform: translate3d(calc((var(--p, 0.5) - 0.5) * -34vw), 0, 0);
+}
+.kin-splitR {
+  transform: translate3d(calc((var(--p, 0.5) - 0.5) * 34vw), 0, 0);
+}
+
+.kin-converge {
+  font-size: clamp(3.8rem, 15vw, 16rem);
+}
+.kin-convergeL {
+  transform: translate3d(calc((1 - var(--p, 1)) * -45vw), 0, 0);
+}
+.kin-convergeR {
+  transform: translate3d(calc((1 - var(--p, 1)) * 45vw), 0, 0);
+}
+
+/* ---------- Practice cards ---------- */
+
+.kin-card {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 100%;
+  min-height: 16rem;
+  padding: 1.25rem;
+  overflow: hidden;
+  text-align: left;
+  background: var(--k-paper);
+  color: var(--k-ink);
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+.kin-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--k-sig);
+  transform: scaleY(0);
+  transform-origin: bottom;
+  transition: transform 0.7s var(--k-out);
+}
+.kin-card[data-hidden="true"] {
+  opacity: 0;
+  transition: none;
+}
+.kin-cardName {
+  font-size: clamp(2rem, 2.9vw, 2.9rem);
+  transition: transform 0.7s var(--k-out);
+}
+.kin-cardBody {
+  transition: transform 0.7s var(--k-out);
+}
+.kin-cardCaps {
+  opacity: 0;
+  transform: translateY(12px);
+  transition:
+    opacity 0.4s ease,
+    transform 0.7s var(--k-out);
+}
+.kin-cardPlus {
+  display: grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  flex: none;
+  border-radius: 999px;
+  box-shadow: inset 0 0 0 1.5px var(--k-ink);
+  transition:
+    transform 0.7s var(--k-out),
+    background-color 0.3s ease,
+    color 0.3s ease;
+}
+.kin-card:focus-visible {
+  outline-offset: -4px;
+}
+@media (min-width: 640px) {
+  .kin-card {
+    min-height: 21rem;
+    padding: 1.5rem;
+  }
+}
+@media (hover: hover) {
+  .kin-card:hover::before {
+    transform: scaleY(1);
+  }
+  .kin-card:hover .kin-cardPlus {
+    transform: rotate(90deg);
+    background: var(--k-ink);
+    color: var(--k-sig);
+  }
+  .kin-card:hover .kin-cardBody {
+    transform: translateY(-0.5rem);
+  }
+  .kin-card:hover .kin-cardCaps {
+    opacity: 1;
+    transform: none;
+    transition-delay: 0.08s;
+  }
+}
+.kin-card:focus-visible::before {
+  transform: scaleY(1);
+}
+.kin-card:focus-visible .kin-cardCaps {
+  opacity: 1;
+  transform: none;
+}
+@media (hover: none) {
+  .kin-cardCaps {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.kin-cta {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+}
+.kin-cta::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--k-sig);
+  transform: scaleY(0);
+  transform-origin: bottom;
+  transition: transform 0.7s var(--k-out);
+}
+.kin-cta .kin-ctaArrow {
+  transition: transform 0.7s var(--k-out);
+}
+@media (hover: hover) {
+  .kin-cta:hover {
+    color: var(--k-ink);
+  }
+  .kin-cta:hover::before {
+    transform: scaleY(1);
+  }
+  .kin-cta:hover .kin-ctaArrow {
+    transform: translate(6px, -6px);
+  }
+}
+
+/* The expanded practice: a colour layer grows from the card's rectangle to
+   the viewport (transform only), then the content rises in. */
+.kin-sheetBg {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  background: var(--k-sig);
+  transform-origin: 0 0;
+  will-change: transform;
+  pointer-events: none;
+}
+.kin-sheet {
+  position: fixed;
+  inset: 0;
+  z-index: 61;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  color: var(--k-ink);
+  visibility: hidden;
+  transition: visibility 0s linear 0.35s;
+}
+.kin-sheet[data-open="true"] {
+  visibility: visible;
+  transition: visibility 0s;
+}
+.kin-sheet :focus-visible {
+  outline-color: var(--k-ink);
+}
+.kin-sheetIn {
+  opacity: 0;
+  transform: translateY(40px);
+  transition:
+    opacity 0.25s ease,
+    transform 0.4s var(--k-ease);
+}
+.kin-sheet[data-open="true"] .kin-sheetIn {
+  opacity: 1;
+  transform: none;
+  transition:
+    opacity 0.6s ease,
+    transform 0.9s var(--k-out);
+  transition-delay: calc(0.5s + var(--d, 0) * 60ms);
+}
+.kin-sheetName {
+  font-size: clamp(3rem, 9.5vw, 10.5rem);
+}
+.kin-capLink {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+}
+.kin-capLink::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--k-ink);
+  transform: scaleY(0);
+  transform-origin: bottom;
+  transition: transform 0.6s var(--k-out);
+}
+.kin-capLink .kin-capText,
+.kin-capLink svg {
+  transition: transform 0.6s var(--k-out);
+}
+@media (hover: hover) {
+  .kin-capLink:hover {
+    color: var(--k-sig);
+  }
+  .kin-capLink:hover::before {
+    transform: scaleY(1);
+  }
+  .kin-capLink:hover .kin-capText {
+    transform: translateX(0.75rem);
+  }
+  .kin-capLink:hover svg {
+    transform: rotate(-45deg);
+  }
+}
+
+/* ---------- Work rows ---------- */
+
+.kin-workRow {
+  position: relative;
+  isolation: isolate;
+  display: block;
+  overflow: hidden;
+}
+.kin-workRow::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--k-sig);
+  transform: scaleY(0);
+  transform-origin: bottom;
+  transition: transform 0.7s var(--k-out);
+}
+.kin-workName {
+  font-size: clamp(2.6rem, 7.4vw, 7.6rem);
+  transition: transform 0.8s var(--k-out);
+}
+.kin-workArrow {
+  transition: transform 0.8s var(--k-out);
+  transform: rotate(-45deg);
+}
+.kin-workMeta {
+  transition:
+    transform 0.8s var(--k-out),
+    opacity 0.4s ease;
+}
+@media (hover: hover) {
+  .kin-workRow:hover {
+    color: var(--k-ink);
+  }
+  .kin-workRow:hover::before {
+    transform: scaleY(1);
+  }
+  .kin-workRow:hover .kin-workName {
+    transform: translateX(clamp(0.75rem, 2vw, 2rem));
+  }
+  .kin-workRow:hover .kin-workArrow {
+    transform: none;
+  }
+  .kin-workRow:hover .kin-workDim {
+    color: var(--k-ink);
+  }
+}
+.kin-workRow:focus-visible {
+  outline-offset: -4px;
+}
+
+/* ---------- Industries ---------- */
+
+.kin-industry {
+  position: relative;
+  isolation: isolate;
+  display: inline-block;
+}
+.kin-industry::before {
+  content: "";
+  position: absolute;
+  inset: 0.12em -0.12em 0.04em;
+  z-index: -1;
+  background: var(--k-sig);
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.6s var(--k-out);
+}
+@media (hover: hover) {
+  .kin-industry:hover::before {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+}
+
+/* ---------- Footer ---------- */
+
+.kin-wordmark {
+  font-size: 24vw;
+  line-height: 0.78;
+  letter-spacing: -0.05em;
+  transform: translate3d(0, calc((1 - var(--p, 1)) * 40%), 0);
+}
+
+/* ---------- Mobile menu ---------- */
+
+.kin-menu {
+  position: fixed;
+  inset: 0;
+  z-index: 70;
+  background: var(--k-sig);
+  color: var(--k-ink);
+  clip-path: inset(0 0 100% 0);
+  visibility: hidden;
+  transition:
+    clip-path 0.7s var(--k-ease),
+    visibility 0s linear 0.7s;
+}
+.kin-menu[data-open="true"] {
+  clip-path: inset(0 0 0 0);
+  visibility: visible;
+  transition:
+    clip-path 0.7s var(--k-ease),
+    visibility 0s;
+}
+.kin-menuLink {
+  font-size: clamp(2.6rem, 12vw, 5rem);
+}
+
+/* ---------- Reduced motion: everything still and finished ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .kin-heroLineA,
+  .kin-heroLineB,
+  .kin-heroLineC,
+  .kin-row,
+  .kin-splitL,
+  .kin-splitR,
+  .kin-convergeL,
+  .kin-convergeR,
+  .kin-wordmark,
+  .kin-glyph {
+    transform: none !important;
+  }
+  .kin-wipe {
+    clip-path: none;
+  }
+  .kin-fillWord {
+    opacity: 1;
+  }
+  .kin-mark::before {
+    transform: none;
+  }
+  .kin-rise,
+  .kin-fadeUp,
+  .kin-cue::after,
+  .kin-timer > span {
+    animation: none;
+  }
+  .kin-slotWord,
+  .kin-sheetIn,
+  .kin-sheet[data-open="true"] .kin-sheetIn,
+  .kin-menu,
+  .kin-menu[data-open="true"],
+  .kin-header {
+    transition: none;
+  }
+}
+
+}

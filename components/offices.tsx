@@ -7,7 +7,7 @@ export async function OfficeCards() {
   return (
     <ul className="grid gap-4 md:grid-cols-2">
       {offices.map((o) => (
-        <li key={o.city} className="rounded-xl border border-line bg-white p-7 text-ink md:p-8" data-reveal>
+        <li key={o.city} className="card p-7 text-ink md:p-8" data-reveal>
           <p className="label mb-4 text-blue">{o.hq ? "Head office" : "Office"}</p>
           <h3 className="h3">
             {o.city}, {o.country}
